@@ -12,7 +12,7 @@ Uma single-page em HTML/CSS/JS puro, sem build step e sem dependências externas
 - **História / Carreira** — linha do tempo profissional completa, da primeira experiência (Brisanet, 2019) até a posição atual na Softplan, incluindo as transições internas de cargo.
 - **Projetos** — cards com os projetos que mais representam meu trabalho, entre eles:
   - **Atlas** — plataforma interna de AIOps para centralizar alertas do Zabbix, automatizar triagem e acelerar resposta a incidentes (um módulo sanitizado do código está publicado em repositório separado como amostra).
-  - **Nativy** — projeto pessoal open-source de tradução simultânea em chamadas de vídeo (WebRTC) usando IA 100% local (Whisper + Ollama). [Repositório](https://github.com/Erickson45/nativy).
+  - **Nativy** — projeto pessoal open-source de tradução simultânea em chamadas de vídeo (WebRTC) usando IA 100% local (Whisper + Ollama). [Repositório]([https://github.com/Erickson45/nativy](https://erickson45.github.io/Meu-Portifolio/)).
 - **Certificações** — Google AI Professional, IBM Software Engineering Essentials, Cisco (Cibersegurança Júnior), Alura (Especialista em IA) e Santander Academy (AWS).
 
 ## Tecnologias utilizadas
