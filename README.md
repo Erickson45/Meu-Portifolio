@@ -2,7 +2,7 @@
 
 Site pessoal para apresentar minha trajetória, projetos e foco profissional em **Monitoramento, Automação e AIOps**.
 
-🔗 **Live:** https://erickson45.github.io/ericksonqueiroz.github.io/
+🔗 **Live:** https://erickson45.github.io/Meu-Portifolio/
 
 ## O que tem aqui
 
