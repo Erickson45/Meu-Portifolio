@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfólio de Erickson Queiroz - Monitoramento, Automação e AIOps.">
+    <title>Erickson Queiroz | Monitoramento & Automação</title>
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- PALETA "CORPORATE TECH" PREMIUM --- */
+            --bg-deep: #030712; /* Azul quase preto, mais rico */
+            --bg-surface: #0f172a;
+            
+            --neon-primary: #00e5ff; /* Ciano Tecnológico Brilhante */
+            --neon-secondary: #3b82f6; /* Azul Corporativo Vibrante */
+            --neon-accent: #ef4444; 
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dark: #0f172a;
+            
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(0, 229, 255, 0.15);
+            
+            /* Bordas mais retas/quadradas (estilo IDE/Dashboard) */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* --- BACKGROUND TECH GRID & GLOW INTERATIVO --- */
+        #neural-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background-color: var(--bg-deep);
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Luz sutil no topo fixa */
+        .bg-glow-static {
+            position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
+            width: 80vw; height: 60vh; 
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* Luz que segue o mouse (Efeito WOW) */
+        .mouse-glow {
+            position: fixed;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: width 0.3s, height 0.3s;
+        }
+
+        /* --- TYPOGRAPHY & UTILS --- */
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+        
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; color: #fff; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 20%, var(--neon-primary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .highlight { color: var(--neon-primary); font-weight: 700; }
+
+        .section-header { text-align: left; margin-bottom: 4rem; position: relative; border-left: 4px solid var(--neon-primary); padding-left: 20px; }
+        .section-tag {
+            display: inline-block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--neon-primary); margin-bottom: 0.5rem; font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .section-title {
+            font-size: 3rem; font-weight: 800; text-transform: uppercase;
+            color: #fff; line-height: 1.1;
+        }
+
+        /* --- BUTTONS (Square/Corporate) --- */
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 28px; border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none; color: var(--bg-deep);
+            background: var(--neon-primary);
+            position: relative; overflow: hidden;
+            transition: var(--transition-smooth);
+            border: 1px solid var(--neon-primary); cursor: pointer;
+        }
+        .btn::after {
+            content: ''; position: absolute; bottom: 0; right: 0; width: 8px; height: 8px;
+            background: rgba(255,255,255,0.8);
+        }
+        .btn:hover { background: transparent; color: var(--neon-primary); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3) inset; }
+
+        .btn-outline {
+            background: transparent; color: var(--text-main); border-color: rgba(255,255,255,0.3);
+        }
+        .btn-outline::after { background: var(--neon-primary); }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: #fff; }
+
+        /* --- HEADER NAV --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 20px 0; transition: 0.4s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(12px);
+        }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; color: #fff; text-decoration: none; }
+        .logo span { color: var(--neon-primary); }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a {
+            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        nav a:hover, nav a.active { color: var(--neon-primary); text-shadow: 0 0 10px rgba(0,229,255,0.5); }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding-top: 80px; position: relative;
+        }
+        
+        .hero-grid {
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 4.2rem; line-height: 1.1; margin-bottom: 1.5rem; font-weight: 800;
+        }
+        .hero-content p {
+            font-size: 1.15rem; color: var(--text-muted); margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        /* Foto Corporativa Brilhante */
+        .profile-wrapper {
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        .tech-frame {
+            position: relative; width: 380px; height: 380px; padding: 15px;
+        }
+        
+        /* Cantos interativos simulando um dashboard target */
+        .tech-frame::before, .tech-frame::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            border: 2px solid var(--neon-primary); z-index: 10; transition: var(--transition-smooth);
+        }
+        .tech-frame::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .tech-frame::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+        
+        .tech-frame:hover::before, .tech-frame:hover::after { width: 100%; height: 100%; opacity: 0.2; }
+
+        .profile-img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
+            z-index: 2; position: relative;
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- SOBRE (STORYTELLING) --- */
+        .story-section { padding: 6rem 0; }
+        
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 4rem; position: relative; overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--neon-primary);
+        }
+
+        .story-grid { display: grid; grid-template-columns: 60px 1fr; gap: 2rem; }
+        .story-icon { font-size: 3rem; color: var(--neon-primary); }
+        .story-text h3 { font-size: 2rem; margin-bottom: 1.5rem; color: #fff; }
+        .story-text p { margin-bottom: 1.2rem; font-size: 1.05rem; color: var(--text-muted); }
+
+        /* --- TIMELINE PROFISSIONAL --- */
+        .timeline-wrapper {
+            position: relative; max-width: 1000px;
+            padding-left: 40px;
+        }
+        .timeline-line {
+            position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .timeline-item {
+            position: relative; margin-bottom: 3rem;
+            opacity: 0; transform: translateY(20px); transition: var(--transition-smooth);
+        }
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+
+        /* Losangos corporativos na timeline */
+        .timeline-marker {
+            position: absolute; left: -46px; top: 28px;
+            width: 12px; height: 12px;
+            background: var(--bg-deep); border: 2px solid var(--neon-primary);
+            transform: rotate(45deg); 
+            z-index: 2;
+        }
+        
+        .job-card {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm); padding: 2rem;
+            transition: var(--transition-smooth); position: relative;
+        }
+        .job-card:hover {
+            background: rgba(0, 229, 255, 0.03); border-color: rgba(0, 229, 255, 0.4);
+            transform: translateX(5px);
+        }
+        
+        .job-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
+        .job-role { font-size: 1.3rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif; }
+        .job-company { color: var(--neon-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
+        .job-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* --- PROJETOS GRID (IMAGENS VIVAS) --- */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;
+        }
+        
+        .project-card {
+            background: var(--bg-surface); border-radius: var(--radius-md);
+            border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+            transition: var(--transition-smooth); display: flex; flex-direction: column;
+            height: 100%; position: relative;
+        }
+        .project-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: transparent; transition: 0.3s; z-index: 10;
+        }
+        .project-card:hover::before { background: var(--neon-primary); }
+        .project-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        
+        .card-media {
+            height: 200px; overflow: hidden; position: relative;
+            background: #000; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .card-media img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s ease; opacity: 0.9;
+        }
+        .project-card:hover .card-media img { transform: scale(1.05); opacity: 1; }
+        
+        .card-icon-placeholder {
+            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 229, 255, 0.05);
+            font-size: 3rem; color: var(--text-muted);
+        }
+        .project-card:hover .card-icon-placeholder { color: var(--neon-primary); }
+
+        .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content h3 { font-size: 1.2rem; margin-bottom: 0.8rem; }
+        .card-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; }
+        
+        .card-action { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+        .card-tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            color: var(--neon-primary); background: rgba(0, 229, 255, 0.05);
+            padding: 4px 8px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 2px;
+        }
+        
+        /* Nova classe para links secundários (Ex: Ver Post do LinkedIn) */
+        .card-link {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600;
+            color: #fff; background: rgba(59, 130, 246, 0.15);
+            padding: 5px 10px; border: 1px solid var(--neon-secondary); border-radius: var(--radius-sm);
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+            transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .card-link:hover {
+            background: var(--neon-secondary); color: #fff;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* --- CERTIFICAÇÕES --- */
+        .cert-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+        }
+        .cert-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm); padding: 15px 20px;
+            display: flex; align-items: center; gap: 20px;
+            transition: var(--transition-smooth);
+        }
+        .cert-card:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
+        .cert-img {
+            width: 60px; height: 60px; flex-shrink: 0; background: #fff;
+            border-radius: var(--radius-sm); padding: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .cert-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .cert-info h3 { font-size: 1rem; margin-bottom: 2px; color: #fff; }
+        .cert-info p { font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+        /* --- SKILLS DASHBOARD --- */
+        .skills-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
+        }
+        .skill-capsule {
+            padding: 15px; border-radius: var(--radius-sm);
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
+            color: #fff; font-weight: 500; font-size: 0.95rem;
+            display: flex; align-items: center; gap: 12px; transition: 0.3s;
+            border-left: 3px solid rgba(255,255,255,0.3);
+        }
+        .skill-capsule:hover {
+            background: rgba(0, 229, 255, 0.05); border-color: rgba(0, 229, 255, 0.4);
+            border-left: 3px solid var(--neon-primary); color: var(--neon-primary);
+            transform: translateY(-2px);
+        }
+        .skill-capsule ion-icon { font-size: 1.4rem; color: var(--text-muted); transition: 0.3s;}
+        .skill-capsule:hover ion-icon { color: var(--neon-primary); }
+
+        /* --- PESSOAL (FOTO VIVA) --- */
+        #pessoal { margin-top: 6rem; margin-bottom: 6rem; }
+        .personal-card {
+            display: flex; align-items: center; gap: 4rem;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); 
+            padding: 4rem; border-radius: var(--radius-md);
+            border-right: 4px solid var(--neon-secondary);
+        }
+        .personal-text { flex: 1; }
+        .personal-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .personal-text p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.2rem; }
+        
+        .personal-img-wrapper {
+            position: relative; width: 280px; height: 280px;
+        }
+        .personal-img-wrapper::before {
+            content: ''; position: absolute; top: 15px; left: 15px; width: 100%; height: 100%;
+            border: 2px solid var(--neon-secondary); border-radius: var(--radius-sm); z-index: 1;
+            transition: 0.3s;
+        }
+        .personal-img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
+            position: relative; z-index: 2; transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .personal-img-wrapper:hover .personal-img { transform: translate(5px, 5px); }
+        .personal-img-wrapper:hover::before { transform: translate(-5px, -5px); border-color: var(--neon-primary); }
+
+        /* --- FOOTER & CONTACT --- */
+        .contact-section { text-align: left; margin-bottom: 4rem; }
+        .social-links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        
+        footer {
+            padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            color: #555; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-deep);
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 968px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: left; gap: 3rem; }
+            .hero-content h1 { font-size: 3rem; }
+            .tech-frame { width: 300px; height: 300px; margin: 0 auto; }
+            
+            .section-header { text-align: left; }
+            .timeline-wrapper { padding-left: 20px; }
+            .timeline-marker { left: -26px; }
+            .job-card { padding: 1.5rem; }
+            
+            .personal-card { flex-direction: column; padding: 2rem; }
+            .personal-img-wrapper { width: 100%; max-width: 280px; margin: 0 auto; }
+            .story-grid { grid-template-columns: 1fr; }
+            .glass-card { padding: 2rem; }
+            
+            nav ul { display: none; }
+            footer { flex-direction: column; gap: 10px; text-align: center; }
+            .mouse-glow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Gerador de placeholder local (sem depender de serviço externo) -->
+    <script>
+        function ph(text, w, h, bg, fg) {
+            bg = bg || '0b121f'; fg = fg || '00e5ff';
+            var size = Math.max(12, Math.round(Math.min(w, h) / 9));
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+                '<rect width="100%" height="100%" fill="#' + bg + '"/>' +
+                '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" ' +
+                'font-family="monospace" font-size="' + size + '" fill="#' + fg + '">' + text + '</text>' +
+                '</svg>';
+            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        }
+    </script>
+
+    <!-- Fundo de Luz Inteligente -->
+    <div class="bg-glow-static"></div>
+    <div class="mouse-glow" id="mouse-glow"></div>
+    <canvas id="neural-canvas"></canvas>
+
+    <header id="navbar">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="#" class="logo">Erickson<span>_</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#sobre">História</a></li>
+                    <li><a href="#jornada">Carreira</a></li>
+                    <li><a href="#projetos">Projetos</a></li>
+                    <li><a href="#certificacoes">Certs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content fade-in-up">
+                        <span class="section-tag">Status: Online</span>
+                        <h1>Erickson <br> <span class="gradient-text">Queiroz</span></h1>
+                        <p>
+                            Analista focado em <strong>Monitoramento</strong>, <strong>Automação</strong> e <strong>AIOps</strong>. Transformo operações manuais em fluxos sistêmicos inteligentes e escaláveis, reduzindo o esforço operacional através de <strong>Python</strong>, integração de APIs e <strong>IA Local</strong>.
+                        </p>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;"> 
+                            <a href="#projetos" class="btn">
+                                <ion-icon name="code-working-outline"></ion-icon> Ver Projetos
+                            </a>
+                            <a href="https://github.com/erickson45" target="_blank" class="btn btn-outline">
+                                <ion-icon name="logo-github"></ion-icon> GitHub
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-wrapper fade-in-up">
+                        <div class="tech-frame">
+                            <img src="perfil.jpg" alt="Erickson Queiroz" class="profile-img" onerror="this.onerror=null;this.src=ph('Erickson',350,350,'0a0f18','00e5ff')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE -->
+        <section id="sobre" class="story-section">
+            <div class="container">
+                <div class="glass-card fade-in-up">
+                    <div class="story-grid">
+                        <div class="story-icon">
+                            <ion-icon name="terminal-outline"></ion-icon>
+                        </div>
+                        <div class="story-text">
+                            <h3>Resiliência & Evolução Contínua</h3>
+                            <p>
+                                Minha trajetória é marcada pela forte capacidade de adaptação e resolução de problemas estruturais. Iniciei minha jornada em suporte técnico e monitoramento de infraestrutura, onde construí uma base sólida sobre o comportamento e a resiliência de grandes redes.
+                            </p>
+                            <p>
+                                Ao longo do tempo, desenvolvi uma mentalidade voltada para a eficiência corporativa, buscando ativamente eliminar o trabalho manual (toil). Minhas experiências me ensinaram a manter a calma em incidentes críticos e a focar rapidamente no restabelecimento e na solução raiz.
+                            </p>
+                            <p>
+                                Hoje, concentro minha atuação na criação de sistemas de automação e práticas de observabilidade. Utilizo engenharia de software e recursos de IA para orquestrar ferramentas, garantir estabilidade operacional e entregar resultados em larga escala.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JORNADA -->
+        <section id="jornada" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Carreira</span>
+                    <h2 class="section-title">Minha Jornada</h2>
+                </div>
+
+                <div class="timeline-wrapper">
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Analista de Aplicação e Infraestrutura</span>
+                                <span class="job-company">Softplan • Mai/2026 - Atual</span>
+                            </div>
+                            <p class="job-desc">Sustentação de ambientes críticos, automação de processos operacionais em Python e integração com observabilidade (Zabbix), Microsoft Graph/Teams e apoio automatizado à triagem com IA local.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Técnico de Infraestrutura</span>
+                                <span class="job-company">Softplan • Out/2025 - Mai/2026</span>
+                            </div>
+                            <p class="job-desc">Suporte e sustentação da infraestrutura de TI, acompanhando de perto a operação de NOC e o ciclo de vida de incidentes — base que levou à promoção e deu origem ao Atlas.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Analista de Telecomunicações</span>
+                                <span class="job-company">Brisanet • Out/2024 - Set/2025</span>
+                            </div>
+                            <p class="job-desc">Criação de automações operacionais com Python, elaboração de Dashboards executivos de performance de redes e aplicação de inteligência de dados na tomada de decisão técnica.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Analista de NOC</span>
+                                <span class="job-company">MDsystems • Mai/2024 - Set/2024</span>
+                            </div>
+                            <p class="job-desc">Monitoramento proativo e observabilidade 24/7, garantindo a rápida identificação e contenção de incidentes críticos de infraestrutura de rede.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Analista de Suporte Técnico</span>
+                                <span class="job-company">Tivit • Set/2023 - Mai/2024</span>
+                            </div>
+                            <p class="job-desc">Sustentação especializada N2/N3 focada na estabilidade e no atendimento ágil para infraestrutura de grandes contas corporativas.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Analista de Suporte</span>
+                                <span class="job-company">Stefanini • Mai/2023 - Jun/2023</span>
+                            </div>
+                            <p class="job-desc">Atuação em suporte técnico com foco em hardware de computadores e monitoramento proativo de ambientes corporativos.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Suporte Técnico (Estágio)</span>
+                                <span class="job-company">DBcorp • Out/2022 - Mai/2023</span>
+                            </div>
+                            <p class="job-desc">Estágio em suporte técnico com foco em sistemas ERP, atendimento a usuários internos e primeiro contato com ambientes corporativos de grande porte.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Técnico de TI</span>
+                                <span class="job-company">Telecardio • Abr/2022 - Out/2022</span>
+                            </div>
+                            <p class="job-desc">Promovido após 6 meses como Técnico de Instalação. Manutenção de ambiente on-premise, suporte a hardware e configuração de VPNs.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Técnico de Instalação</span>
+                                <span class="job-company">Telecardio • Out/2021 - Abr/2022</span>
+                            </div>
+                            <p class="job-desc">Instalação, configuração e manutenção de equipamentos de rede e VPNs em ambiente on-premise, com atendimento direto a usuários e áreas internas — atuação que levou à promoção para Técnico de TI.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker" style="border-color: rgba(255,255,255,0.3); background: transparent;"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Atendimento & Serviços</span>
+                                <span class="job-company" style="color: #94a3b8;">Tanka Restaurante</span>
+                            </div>
+                            <p class="job-desc">Período fundamental de desenvolvimento de resiliência corporativa, focado na gestão de estresse, comunicação eficiente e trabalho em equipe sob alta pressão.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker" style="border-color: var(--neon-secondary); box-shadow: 0 0 10px var(--neon-secondary);"></div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <span class="job-role">Início de Carreira</span>
+                                <span class="job-company">Brisanet (Primeiro Emprego) • Nov/2019 - Dez/2020</span>
+                            </div>
+                            <p class="job-desc">Ponto de partida no mercado corporativo, onde construí minhas bases técnicas de infraestrutura e desenvolvi um forte foco na resolução de problemas sistêmicos.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJETOS -->
+        <section id="projetos" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Deployments</span>
+                    <h2 class="section-title">Projetos & Talks</h2>
+                </div>
+
+                <div class="projects-grid">
+                    
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="atlas.png" alt="Sistema de Automação Operacional com IA" onerror="this.onerror=null;this.src=ph('Automação AIOps',600,400,'0b121f','00e5ff')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Sistema de Automação Operacional com IA</h3>
+                            <p>Desenvolvimento de solução interna em Python para automação de incidentes, integração com ferramentas de monitoramento, geração de notificações, relatórios e apoio à triagem técnica corporativa utilizando IA local.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Python</span>
+                                <span class="card-tag">IA Local / LLMs</span>
+                                <span class="card-tag">Integração de APIs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <div class="card-icon-placeholder"><ion-icon name="language-outline"></ion-icon></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Nativy — Tradução Simultânea com IA</h3>
+                            <p>Projeto pessoal open-source: chamadas de vídeo via WebRTC com tradução simultânea assistida por IA 100% local (Whisper + Ollama), pensado para profissionais de TI em entrevistas e reuniões em inglês.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Python / FastAPI</span>
+                                <span class="card-tag">WebRTC</span>
+                                <span class="card-tag">LLM Local</span>
+                            </div>
+                            <div class="card-action" style="margin-top: 10px;">
+                                <a href="https://github.com/Erickson45/nativy" target="_blank" class="card-link">
+                                    <ion-icon name="logo-github"></ion-icon> Ver Código
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="brisanet.png" alt="Palestras Tech" onerror="this.onerror=null;this.src=ph('Talk IA',600,400,'0b121f','00e5ff')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Speaker & Evangelização Tech</h3>
+                            <p>Palestra ministrada sobre aplicabilidade corporativa e adoção da Inteligência Artificial. Compartilhando visão arquitetural e prática com a comunidade técnica.</p>
+                            <div class="card-action" style="margin-top: 10px;">
+                                <!-- AQUI ESTÁ A ALTERAÇÃO: Usando a nova classe card-link -->
+                                <a href="https://www.linkedin.com/in/erickson-queiroz/" target="_blank" class="card-link">
+                                    <ion-icon name="logo-linkedin"></ion-icon> Ver Post
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <div class="card-icon-placeholder"><ion-icon name="git-network-outline"></ion-icon></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Automação em Telecomunicações</h3>
+                            <p>Orquestração e customização de chamados sistêmicos, integrando chatbots operacionais para garantir agilidade no monitoramento e alta disponibilidade em ambientes críticos de redes.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Observabilidade</span>
+                                <span class="card-tag">Orquestração</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="bot.png" alt="Bot RPA" onerror="this.onerror=null;this.src=ph('Integração de Dados',600,400,'0b121f','2563eb')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Centralização de Dados e Automação</h3>
+                            <p>Criação de rotinas em Python que agregam e processam múltiplas fontes de dados simultaneamente, garantindo uma tomada de decisão centralizada e livre de trabalho manual.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Python Scripting</span>
+                                <span class="card-tag">Processamento de Dados</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="dash.png" alt="Dashboards" onerror="this.onerror=null;this.src=ph('Dashboards',600,400,'0b121f','00e5ff')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Visualização e Painéis Executivos</h3>
+                            <p>Desenvolvimento de painéis de observabilidade em tempo real, mapeando KPIs estruturais e garantindo controle absoluto de SLAs de infraestrutura corporativa.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Data Viz</span>
+                                <span class="card-tag">Gestão de KPIs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="tivit.jpg" alt="Mentoria" onerror="this.onerror=null;this.src=ph('Mentoria',600,400,'0b121f','00e5ff')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Mentoria Operacional</h3>
+                            <p>Transferência de conhecimento e instrução técnica no onboarding de novos talentos, visando padronização operacional e aceleração da curva de aprendizado.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Treinamento</span>
+                                <span class="card-tag">Onboarding Tech</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <img src="chamados.png" alt="Gestão de Incidentes" onerror="this.onerror=null;this.src=ph('Incidentes',600,400,'0b121f','00e5ff')">
+                        </div>
+                        <div class="card-content">
+                            <h3>Integração ITSM e ITSO</h3>
+                            <p>Sincronização entre plataformas corporativas de chamados e soluções de mensageria automatizada (bots), com foco absoluto na redução de tempo de resposta a falhas sistêmicas.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Gestão de Incidentes</span>
+                                <span class="card-tag">ITIL / ITSM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card fade-in-up">
+                        <div class="card-media">
+                            <div class="card-icon-placeholder" style="color: var(--neon-secondary);"><ion-icon name="mail-unread-outline"></ion-icon></div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Notificações Programadas</h3>
+                            <p>Implementação de jobs automatizados e scripts Python para a compilação e disparo de relatórios essenciais de disponibilidade técnica diretamente para as lideranças operacionais.</p>
+                            <div class="card-action">
+                                <span class="card-tag">Cron Jobs</span>
+                                <span class="card-tag">Python</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICAÇÕES -->
+        <section id="certificacoes" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">// Badges</span>
+                    <h2 class="section-title">Certificações</h2>
+                </div>
+                <div class="cert-grid">
+                    <div class="cert-card fade-in-up">
+                        <div class="cert-img">
+                            <img src="blob.png" alt="Google AI Professional" onerror="this.onerror=null;this.src=ph('G',80,80,'ffffff','000000')">
+                        </div>
+                        <div class="cert-info">
+                            <h3>Google AI Professional</h3>
+                            <p>Google Cloud</p>
+                        </div>
+                    </div>
+                    <div class="cert-card fade-in-up" style="transition-delay: 0.2s;">
+                        <div class="cert-img">
+                            <img src="software-engineering-essentials.png" alt="IBM Software Engineering Essentials" onerror="this.onerror=null;this.src=ph('IBM',80,80,'ffffff','000000')">
+                        </div>
+                        <div class="cert-info">
+                            <h3>Software Engineering Essentials</h3>
+                            <p>IBM</p>
+                        </div>
+                    </div>
+                    <div class="cert-card fade-in-up" style="transition-delay: 0.3s;">
+                        <div class="cert-img">
+                            <img src="cisco.png" alt="Cisco Analista de Cibersegurança Júnior" onerror="this.onerror=null;this.src=ph('Cisco',80,80,'ffffff','000000')">
+                        </div>
+                        <div class="cert-info">
+                            <h3>Analista de Cibersegurança Júnior</h3>
+                            <p>Cisco</p>
+                        </div>
+                    </div>
+                    <div class="cert-card fade-in-up" style="transition-delay: 0.4s;">
+                        <div class="cert-img">
+                            <img src="data:," alt="Alura Especialista em IA" onerror="this.onerror=null;this.src=ph('Alura',80,80,'ffffff','000000')">
+                        </div>
+                        <div class="cert-info">
+                            <h3>Especialista em IA</h3>
+                            <p>Alura</p>
+                        </div>
+                    </div>
+                    <div class="cert-card fade-in-up" style="transition-delay: 0.5s;">
+                        <div class="cert-img">
+                            <img src="data:," alt="Santander Academy AWS" onerror="this.onerror=null;this.src=ph('AWS',80,80,'ffffff','000000')">
+                        </div>
+                        <div class="cert-info">
+                            <h3>AWS</h3>
+                            <p>Santander Academy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECH STACK -->
+        <section id="skills" style="padding: 2rem 0;">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 2rem;">
+                    <span class="section-tag">// Environment</span>
+                    <h2 class="section-title">Tech Stack</h2>
+                </div>
+                <div class="skills-container">
+                    <div class="skill-capsule"><ion-icon name="logo-python"></ion-icon> Python & Integração de APIs</div>
+                    <div class="skill-capsule"><ion-icon name="hardware-chip-outline"></ion-icon> IA Local & LLMs na Operação</div>
+                    <div class="skill-capsule"><ion-icon name="pulse-outline"></ion-icon> Observabilidade (Zabbix & Grafana)</div>
+                    <div class="skill-capsule"><ion-icon name="cube-outline"></ion-icon> PostgreSQL & Bancos de Dados</div>
+                    <div class="skill-capsule"><ion-icon name="server-outline"></ion-icon> Linux & Administração de Servidores</div>
+                    <div class="skill-capsule"><ion-icon name="git-branch-outline"></ion-icon> Docker, Deploy e Automação Operacional</div>
+                    <div class="skill-capsule"><ion-icon name="code-slash-outline"></ion-icon> FastAPI & Flask</div>
+                    <div class="skill-capsule"><ion-icon name="people-outline"></ion-icon> Microsoft Graph & Teams</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESSOAL (FOTOS VIBRANTES) -->
+        <section id="pessoal">
+            <div class="container">
+                <div class="personal-card fade-in-up">
+                    <div class="personal-text">
+                        <h2>Quem é o Erickson?</h2>
+                        <p>
+                            Sou um profissional movido pela resolução lógica de problemas de infraestrutura e entusiasta em práticas de confiabilidade (SRE/AIOps). Tenho muito orgulho das minhas raízes nordestinas e aplico a mesma determinação incansável no meu progresso diário em tecnologia.
+                        </p>
+                        <p>
+                            Acredito firmemente que a tecnologia deve servir como um mecanismo para simplificar a vida humana. Quando não estou arquitetando automações, busco o equilíbrio dedicando meu tempo livre a jogos online, conexões valiosas na comunidade de T.I e trilhas ao ar livre.
+                        </p>
+                    </div>
+                    <div class="personal-img-wrapper">
+                        <img src="eu.jpg" alt="Foto Pessoal" class="personal-img" onerror="this.onerror=null;this.src=ph('Erickson',280,280,'0b121f','00e5ff')">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section id="contato" class="contact-section">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 2rem;">
+                    <span class="section-tag">// Networking</span>
+                    <h2 class="section-title">Vamos Conversar?</h2>
+                </div>
+                <div class="social-links">
+                    <a href="mailto:erickson.queiroz65@gmail.com" class="btn">
+                        <ion-icon name="mail-outline"></ion-icon> Enviar E-mail
+                    </a>
+                    <a href="https://www.linkedin.com/in/erickson-queiroz/" target="_blank" class="btn btn-outline">
+                        <ion-icon name="logo-linkedin"></ion-icon> LinkedIn
+                    </a>
+                    <a href="https://github.com/erickson45" target="_blank" class="btn btn-outline">
+                        <ion-icon name="logo-github"></ion-icon> GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <p>&copy; 2026 Erickson Queiroz.</p>
+            <p style="color: var(--neon-primary);">root@ops:~$ auto-resolve --success</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- EFEITO GLOW MOUSE (Fator UAU) ---
+        const mouseGlow = document.getElementById('mouse-glow');
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            mouseGlow.style.left = mouseX + 'px';
+            mouseGlow.style.top = mouseY + 'px';
+        });
+
+        // --- ANIMAÇÃO DATA PLEXUS / NEURAL NETWORK ---
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4; 
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.4)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = Math.floor((width * height) / 18000); 
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 140) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${0.1 - distance/1400})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+                
+                if (mouseX !== 0 && mouseY !== 0) {
+                    const dxMouse = particles[i].x - mouseX;
+                    const dyMouse = particles[i].y - mouseY;
+                    const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                    
+                    if (distanceMouse < 220) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 - distanceMouse/1466})`; 
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouseX, mouseY);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+
+        // --- ANIMATION OBSERVER ---
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- NAVBAR SCROLL ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
