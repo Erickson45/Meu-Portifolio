@@ -1,6 +1,6 @@
 # Portfólio — Erickson Queiroz
 
-Site pessoal para apresentar minha trajetória, projetos e foco profissional em **Monitoramento, Automação e AIOps**.
+Site pessoal para apresentar minha trajetória, projetos e foco profissional em **DevOps, SRE, Automação e AIOps**.
 
 🔗 **Live:** https://erickson45.github.io/Meu-Portifolio/
 
@@ -11,9 +11,10 @@ Uma single-page em HTML/CSS/JS puro, sem build step e sem dependências externas
 - **Home** — apresentação rápida e principais eixos de atuação (Monitoramento, Automação, AIOps).
 - **História / Carreira** — linha do tempo profissional completa, da primeira experiência (Brisanet, 2019) até a posição atual na Softplan, incluindo as transições internas de cargo.
 - **Projetos** — cards com os projetos que mais representam meu trabalho, entre eles:
-  - **Atlas** — plataforma interna de AIOps para centralizar alertas do Zabbix, automatizar triagem e acelerar resposta a incidentes (um módulo sanitizado do código está publicado em repositório separado como amostra).
-  - **Nativy** — projeto pessoal open-source de tradução simultânea em chamadas de vídeo (WebRTC) usando IA 100% local (Whisper + Ollama). [Repositório]([https://github.com/Erickson45/nativy](https://erickson45.github.io/Meu-Portifolio/)).
-- **Certificações** — Google AI Professional, IBM Software Engineering Essentials, Cisco (Cibersegurança Júnior), Alura (Especialista em IA) e Santander Academy (AWS).
+  - **Atlas** — plataforma interna de AIOps para centralizar alertas do Zabbix, automatizar triagem e acelerar resposta a incidentes (um módulo sanitizado está publicado [aqui](https://github.com/Erickson45/Atlas-Zabbix)); reduziu em 60% o tempo de abertura de chamados.
+  - **SRE-Copilot** — AIOps Incident Gateway: recebe webhooks do Zabbix/Prometheus e usa RAG + LLM local (Ollama) para sugerir diagnóstico e mitigação. [Repositório](https://github.com/Erickson45/sre-copilot).
+  - **Nativy** — projeto pessoal open-source de tradução simultânea em chamadas de vídeo (WebRTC) usando IA 100% local (Whisper + Ollama). [Repositório](https://github.com/Erickson45/nativy).
+- **Certificações** — Google AI, Google Cybersecurity, Google Linux and SQL, IBM Software Engineering Essentials, Cisco (Cibersegurança Júnior), Alura (Especialista em IA) e Santander Academy (AWS).
 
 ## Tecnologias utilizadas
 
