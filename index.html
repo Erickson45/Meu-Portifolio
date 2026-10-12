@@ -1,1004 +1,393 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfólio de Erickson Queiroz - DevOps, SRE, Automação e AIOps.">
-    <title>Erickson Queiroz | DevOps · SRE · Automação</title>
-    
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* --- PALETA "CORPORATE TECH" PREMIUM --- */
-            --bg-deep: #030712; /* Azul quase preto, mais rico */
-            --bg-surface: #0f172a;
-            
-            --neon-primary: #00e5ff; /* Ciano Tecnológico Brilhante */
-            --neon-secondary: #3b82f6; /* Azul Corporativo Vibrante */
-            --neon-accent: #ef4444; 
-            
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --text-dark: #0f172a;
-            
-            --glass-bg: rgba(15, 23, 42, 0.7);
-            --glass-border: rgba(0, 229, 255, 0.15);
-            
-            /* Bordas mais retas/quadradas (estilo IDE/Dashboard) */
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            
-            --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* --- RESET & BASE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1.7;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        /* --- BACKGROUND TECH GRID & GLOW INTERATIVO --- */
-        #neural-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background-color: var(--bg-deep);
-            background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-        
-        /* Luz sutil no topo fixa */
-        .bg-glow-static {
-            position: fixed; top: -20vh; left: 50%; transform: translateX(-50%);
-            width: 80vw; height: 60vh; 
-            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
-            z-index: -1; pointer-events: none;
-        }
-
-        /* Luz que segue o mouse (Efeito WOW) */
-        .mouse-glow {
-            position: fixed;
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            transition: width 0.3s, height 0.3s;
-        }
-
-        /* --- TYPOGRAPHY & UTILS --- */
-        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
-        
-        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; color: #fff; }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #fff 20%, var(--neon-primary) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        
-        .highlight { color: var(--neon-primary); font-weight: 700; }
-
-        .section-header { text-align: left; margin-bottom: 4rem; position: relative; border-left: 4px solid var(--neon-primary); padding-left: 20px; }
-        .section-tag {
-            display: inline-block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
-            color: var(--neon-primary); margin-bottom: 0.5rem; font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .section-title {
-            font-size: 3rem; font-weight: 800; text-transform: uppercase;
-            color: #fff; line-height: 1.1;
-        }
-
-        /* --- BUTTONS (Square/Corporate) --- */
-        .btn {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 14px 28px; border-radius: var(--radius-sm);
-            font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
-            text-decoration: none; color: var(--bg-deep);
-            background: var(--neon-primary);
-            position: relative; overflow: hidden;
-            transition: var(--transition-smooth);
-            border: 1px solid var(--neon-primary); cursor: pointer;
-        }
-        .btn::after {
-            content: ''; position: absolute; bottom: 0; right: 0; width: 8px; height: 8px;
-            background: rgba(255,255,255,0.8);
-        }
-        .btn:hover { background: transparent; color: var(--neon-primary); box-shadow: 0 0 20px rgba(0, 229, 255, 0.3) inset; }
-
-        .btn-outline {
-            background: transparent; color: var(--text-main); border-color: rgba(255,255,255,0.3);
-        }
-        .btn-outline::after { background: var(--neon-primary); }
-        .btn-outline:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: #fff; }
-
-        /* --- HEADER NAV --- */
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 20px 0; transition: 0.4s;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(12px);
-        }
-        
-        nav { display: flex; justify-content: space-between; align-items: center; }
-        
-        .logo { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; color: #fff; text-decoration: none; }
-        .logo span { color: var(--neon-primary); }
-
-        nav ul { display: flex; list-style: none; gap: 30px; }
-        nav a {
-            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.85rem;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-        }
-        nav a:hover, nav a.active { color: var(--neon-primary); text-shadow: 0 0 10px rgba(0,229,255,0.5); }
-
-        /* --- HERO SECTION --- */
-        #hero {
-            min-height: 100vh; display: flex; align-items: center;
-            padding-top: 80px; position: relative;
-        }
-        
-        .hero-grid {
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
-        }
-        
-        .hero-content h1 {
-            font-size: 4.2rem; line-height: 1.1; margin-bottom: 1.5rem; font-weight: 800;
-        }
-        .hero-content p {
-            font-size: 1.15rem; color: var(--text-muted); margin-bottom: 3rem;
-            max-width: 600px;
-        }
-
-        /* Foto Corporativa Brilhante */
-        .profile-wrapper {
-            display: flex; justify-content: center; align-items: center;
-        }
-        
-        .tech-frame {
-            position: relative; width: 380px; height: 380px; padding: 15px;
-        }
-        
-        /* Cantos interativos simulando um dashboard target */
-        .tech-frame::before, .tech-frame::after {
-            content: ''; position: absolute; width: 40px; height: 40px;
-            border: 2px solid var(--neon-primary); z-index: 10; transition: var(--transition-smooth);
-        }
-        .tech-frame::before { top: 0; left: 0; border-right: none; border-bottom: none; }
-        .tech-frame::after { bottom: 0; right: 0; border-left: none; border-top: none; }
-        
-        .tech-frame:hover::before, .tech-frame:hover::after { width: 100%; height: 100%; opacity: 0.2; }
-
-        .profile-img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
-            z-index: 2; position: relative;
-            background: var(--bg-surface);
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        /* --- SOBRE (STORYTELLING) --- */
-        .story-section { padding: 6rem 0; }
-        
-        .glass-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            padding: 4rem; position: relative; overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            border-left: 4px solid var(--neon-primary);
-        }
-
-        .story-grid { display: grid; grid-template-columns: 60px 1fr; gap: 2rem; }
-        .story-icon { font-size: 3rem; color: var(--neon-primary); }
-        .story-text h3 { font-size: 2rem; margin-bottom: 1.5rem; color: #fff; }
-        .story-text p { margin-bottom: 1.2rem; font-size: 1.05rem; color: var(--text-muted); }
-
-        /* --- TIMELINE PROFISSIONAL --- */
-        .timeline-wrapper {
-            position: relative; max-width: 1000px;
-            padding-left: 40px;
-        }
-        .timeline-line {
-            position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .timeline-item {
-            position: relative; margin-bottom: 3rem;
-            opacity: 0; transform: translateY(20px); transition: var(--transition-smooth);
-        }
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
-
-        /* Losangos corporativos na timeline */
-        .timeline-marker {
-            position: absolute; left: -46px; top: 28px;
-            width: 12px; height: 12px;
-            background: var(--bg-deep); border: 2px solid var(--neon-primary);
-            transform: rotate(45deg); 
-            z-index: 2;
-        }
-        
-        .job-card {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: var(--radius-sm); padding: 2rem;
-            transition: var(--transition-smooth); position: relative;
-        }
-        .job-card:hover {
-            background: rgba(0, 229, 255, 0.03); border-color: rgba(0, 229, 255, 0.4);
-            transform: translateX(5px);
-        }
-        
-        .job-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
-        .job-role { font-size: 1.3rem; font-weight: 700; color: #fff; font-family: 'Outfit', sans-serif; }
-        .job-company { color: var(--neon-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
-        .job-desc { color: var(--text-muted); font-size: 0.95rem; }
-
-        /* --- PROJETOS GRID (IMAGENS VIVAS) --- */
-        .projects-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;
-        }
-        
-        .project-card {
-            background: var(--bg-surface); border-radius: var(--radius-md);
-            border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
-            transition: var(--transition-smooth); display: flex; flex-direction: column;
-            height: 100%; position: relative;
-        }
-        .project-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-            background: transparent; transition: 0.3s; z-index: 10;
-        }
-        .project-card:hover::before { background: var(--neon-primary); }
-        .project-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        
-        .card-media {
-            height: 200px; overflow: hidden; position: relative;
-            background: #000; border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .card-media img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: 0.5s ease; opacity: 0.9;
-        }
-        .project-card:hover .card-media img { transform: scale(1.05); opacity: 1; }
-        
-        .card-icon-placeholder {
-            width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 229, 255, 0.05);
-            font-size: 3rem; color: var(--text-muted);
-        }
-        .project-card:hover .card-icon-placeholder { color: var(--neon-primary); }
-
-        .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-content h3 { font-size: 1.2rem; margin-bottom: 0.8rem; }
-        .card-content p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; }
-        
-        .card-action { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
-        .card-tag {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-            color: var(--neon-primary); background: rgba(0, 229, 255, 0.05);
-            padding: 4px 8px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 2px;
-        }
-        
-        /* Nova classe para links secundários (Ex: Ver Post do LinkedIn) */
-        .card-link {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600;
-            color: #fff; background: rgba(59, 130, 246, 0.15);
-            padding: 5px 10px; border: 1px solid var(--neon-secondary); border-radius: var(--radius-sm);
-            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
-            transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .card-link:hover {
-            background: var(--neon-secondary); color: #fff;
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-        }
-
-        /* --- CERTIFICAÇÕES --- */
-        .cert-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
-        }
-        .cert-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: var(--radius-sm); padding: 15px 20px;
-            display: flex; align-items: center; gap: 20px;
-            transition: var(--transition-smooth);
-        }
-        .cert-card:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
-        .cert-img {
-            width: 60px; height: 60px; flex-shrink: 0; background: #fff;
-            border-radius: var(--radius-sm); padding: 8px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .cert-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .cert-info h3 { font-size: 1rem; margin-bottom: 2px; color: #fff; }
-        .cert-info p { font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-
-        /* --- SKILLS DASHBOARD --- */
-        .skills-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-        }
-        .skill-capsule {
-            padding: 15px; border-radius: var(--radius-sm);
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
-            color: #fff; font-weight: 500; font-size: 0.95rem;
-            display: flex; align-items: center; gap: 12px; transition: 0.3s;
-            border-left: 3px solid rgba(255,255,255,0.3);
-        }
-        .skill-capsule:hover {
-            background: rgba(0, 229, 255, 0.05); border-color: rgba(0, 229, 255, 0.4);
-            border-left: 3px solid var(--neon-primary); color: var(--neon-primary);
-            transform: translateY(-2px);
-        }
-        .skill-capsule ion-icon { font-size: 1.4rem; color: var(--text-muted); transition: 0.3s;}
-        .skill-capsule:hover ion-icon { color: var(--neon-primary); }
-
-        /* --- PESSOAL (FOTO VIVA) --- */
-        #pessoal { margin-top: 6rem; margin-bottom: 6rem; }
-        .personal-card {
-            display: flex; align-items: center; gap: 4rem;
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); 
-            padding: 4rem; border-radius: var(--radius-md);
-            border-right: 4px solid var(--neon-secondary);
-        }
-        .personal-text { flex: 1; }
-        .personal-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .personal-text p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.2rem; }
-        
-        .personal-img-wrapper {
-            position: relative; width: 280px; height: 280px;
-        }
-        .personal-img-wrapper::before {
-            content: ''; position: absolute; top: 15px; left: 15px; width: 100%; height: 100%;
-            border: 2px solid var(--neon-secondary); border-radius: var(--radius-sm); z-index: 1;
-            transition: 0.3s;
-        }
-        .personal-img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
-            position: relative; z-index: 2; transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .personal-img-wrapper:hover .personal-img { transform: translate(5px, 5px); }
-        .personal-img-wrapper:hover::before { transform: translate(-5px, -5px); border-color: var(--neon-primary); }
-
-        /* --- FOOTER & CONTACT --- */
-        .contact-section { text-align: left; margin-bottom: 4rem; }
-        .social-links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
-        
-        footer {
-            padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.05);
-            display: flex; justify-content: space-between; align-items: center;
-            color: #555; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-deep);
-        }
-
-        /* --- RESPONSIVIDADE --- */
-        @media (max-width: 968px) {
-            .hero-grid { grid-template-columns: 1fr; text-align: left; gap: 3rem; }
-            .hero-content h1 { font-size: 3rem; }
-            .tech-frame { width: 300px; height: 300px; margin: 0 auto; }
-            
-            .section-header { text-align: left; }
-            .timeline-wrapper { padding-left: 20px; }
-            .timeline-marker { left: -26px; }
-            .job-card { padding: 1.5rem; }
-            
-            .personal-card { flex-direction: column; padding: 2rem; }
-            .personal-img-wrapper { width: 100%; max-width: 280px; margin: 0 auto; }
-            .story-grid { grid-template-columns: 1fr; }
-            .glass-card { padding: 2rem; }
-            
-            nav ul { display: none; }
-            footer { flex-direction: column; gap: 10px; text-align: center; }
-            .mouse-glow { display: none; }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erickson Queiroz · DevOps, SRE e AIOps</title>
+<meta name="description" content="Analista de Aplicação e Infraestrutura com foco em DevOps, SRE e AIOps. Automação, observabilidade e IA local em ambientes críticos.">
+<meta property="og:title" content="Erickson Queiroz · DevOps, SRE e AIOps">
+<meta property="og:description" content="Automação, observabilidade e IA local em ambientes críticos. Criador do Atlas e do SRE-Copilot.">
+<meta property="og:image" content="perfil.jpg">
+<meta name="theme-color" content="#070B14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2322D3EE'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='11' fill='url(%23g)'/%3E%3Ctext x='20' y='26' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='%23fff'%3EEQ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{--bg:#070B14;--bg2:#0B1120;--s1:rgba(255,255,255,.035);--s2:rgba(255,255,255,.06);--l1:rgba(255,255,255,.09);--l2:rgba(255,255,255,.16);--tx:#E8EEF5;--mu:#93A1B2;--di:#5F6F82;--cy:#22D3EE;--vi:#8B5CF6;--gr:#34D399;--grad:linear-gradient(120deg,#22D3EE 0%,#60A5FA 45%,#8B5CF6 100%);--r:20px;--h:'Space Grotesk',system-ui,sans-serif;--b:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;--m:'JetBrains Mono',ui-monospace,'Courier New',monospace}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--b);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}img{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--h);line-height:1.08;letter-spacing:-.03em;margin:0 0 .5em}
+h1{font-size:clamp(2.8rem,7.4vw,5.6rem);font-weight:700}
+h2{font-size:clamp(2rem,4.6vw,3.3rem);font-weight:700}
+h3{font-size:1.22rem;font-weight:600;letter-spacing:-.01em}
+p{margin:0 0 1em}
+::selection{background:rgba(34,211,238,.3)}
+.c{width:min(1180px,100% - 32px);margin-inline:auto}
+.gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ey{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--m);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cy);margin-bottom:1rem}
+.ey::before{content:"//";color:var(--di);letter-spacing:0}
+.lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--mu);max-width:44rem}
+.sec{position:relative;padding:clamp(5rem,10vw,7.5rem) 0}
+.hd{max-width:46rem;margin-bottom:3rem}
+.prog{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--grad);z-index:100}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.95rem 1.6rem;border-radius:999px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .25s,box-shadow .25s,background .25s;color:#06111C;background:var(--grad);box-shadow:0 8px 30px -8px rgba(34,211,238,.55)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px -8px rgba(139,92,246,.6)}
+.btn svg{width:18px;height:18px}
+.btn.gh{background:var(--s1);color:var(--tx);border-color:var(--l2);box-shadow:none}
+.btn.gh:hover{background:var(--s2)}
+.btn.sm{padding:.55rem 1.05rem;font-size:.9rem}
+:focus-visible{outline:2px solid var(--cy);outline-offset:3px;border-radius:6px}
+.top{position:fixed;inset:0 0 auto;z-index:90;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+.top.on{background:rgba(7,11,20,.75);backdrop-filter:blur(14px);border-bottom-color:var(--l1)}
+.top .c{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{font-family:var(--m);font-weight:500;font-size:1.05rem;text-decoration:none}
+.brand b{color:var(--cy);font-weight:500}
+.brand i{display:inline-block;width:.55em;height:1.05em;vertical-align:-2px;background:var(--cy);animation:bl 1s steps(1) infinite;margin-left:2px}
+@keyframes bl{50%{opacity:0}}
+.nav{display:flex;align-items:center;gap:1.6rem}
+.nav a:not(.btn){text-decoration:none;color:var(--mu);font-weight:500;font-size:.94rem}
+.nav a:not(.btn):hover{color:var(--tx)}
+.tog{display:none;background:none;border:0;width:44px;height:44px;padding:11px;cursor:pointer}
+.tog span{display:block;height:2px;background:var(--tx);margin:5px 0;border-radius:2px;transition:transform .3s,opacity .3s}
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden;isolation:isolate}
+#net{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.7}
+.aur{position:absolute;inset:-20%;z-index:-2;filter:blur(80px);opacity:.55;pointer-events:none}
+.aur i{position:absolute;border-radius:50%;animation:fl 18s ease-in-out infinite}
+.aur i:nth-child(1){width:46vw;height:46vw;left:48%;top:0;background:radial-gradient(circle,#0E7490,transparent 65%)}
+.aur i:nth-child(2){width:38vw;height:38vw;left:62%;top:38%;background:radial-gradient(circle,#6D28D9,transparent 65%);animation-delay:-6s}
+.aur i:nth-child(3){width:34vw;height:34vw;left:5%;top:55%;background:radial-gradient(circle,#1D4ED8,transparent 65%);animation-delay:-12s;opacity:.6}
+@keyframes fl{0%,100%{transform:none}33%{transform:translate(-4vw,3vw) scale(1.08)}66%{transform:translate(3vw,-2vw) scale(.94)}}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:180px;background:linear-gradient(transparent,var(--bg));z-index:-1}
+.hi{display:grid;grid-template-columns:1.1fr .9fr;gap:3.5rem;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:.55rem;padding:.4rem .9rem .4rem .5rem;border-radius:999px;background:var(--s1);border:1px solid var(--l1);font-size:.86rem;color:var(--mu);margin-bottom:1.5rem}
+.badge b{display:inline-flex;align-items:center;gap:.4rem;padding:.15rem .55rem;border-radius:999px;background:rgba(52,211,153,.12);color:var(--gr);font-weight:600;font-size:.78rem}
+.badge b::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gr);animation:pi 2s infinite}
+@keyframes pi{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}80%,100%{box-shadow:0 0 0 9px rgba(52,211,153,0)}}
+.role{font-family:var(--h);font-size:clamp(1.3rem,2.6vw,1.9rem);font-weight:600;color:var(--tx);margin:-.2em 0 1.1rem}
+.rot{display:inline-block}.rot span{display:inline-block;transition:opacity .45s,transform .45s,filter .45s}
+.rot span.out{opacity:0;transform:translateY(-.35em);filter:blur(6px)}
+.rot span.in{opacity:0;transform:translateY(.35em);filter:blur(6px);transition:none}
+.cta{display:flex;flex-wrap:wrap;gap:.9rem;margin:2rem 0 1.3rem}
+.meta{display:flex;flex-wrap:wrap;gap:1.3rem;font-size:.88rem;color:var(--di)}
+.meta span::before{content:"▹ ";color:var(--cy)}
+.vis{position:relative}
+.term{border-radius:var(--r);background:rgba(6,10,18,.85);border:1px solid var(--l2);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 80px -20px rgba(34,211,238,.25);overflow:hidden;transform:perspective(1200px) rotateY(-8deg) rotateX(4deg);transition:transform .6s}
+.term:hover{transform:none}
+.tb{display:flex;align-items:center;gap:7px;padding:.85rem 1.1rem;border-bottom:1px solid var(--l1)}
+.tb i{width:11px;height:11px;border-radius:50%}.tb i:nth-child(1){background:#F87171}.tb i:nth-child(2){background:#FBBF24}.tb i:nth-child(3){background:#34D399}
+.tb span{margin-left:.7rem;font-family:var(--m);font-size:.76rem;color:var(--di)}
+.term pre{margin:0;padding:1.4rem 1.5rem 1.6rem;min-height:320px;font-family:var(--m);font-size:.84rem;line-height:1.9;white-space:pre-wrap}
+.k{color:var(--cy)}.g{color:var(--gr)}.d{color:var(--di)}.v{color:#C4B5FD}.y{color:#FBBF24}
+.car{display:inline-block;width:.6em;height:1.1em;vertical-align:-2px;background:var(--cy);animation:bl 1s steps(1) infinite;margin-left:2px}
+.chip{position:absolute;display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;border-radius:14px;background:rgba(11,17,32,.88);border:1px solid var(--l2);font-size:.8rem;box-shadow:0 20px 40px -20px rgba(0,0,0,.8);animation:bo 6s ease-in-out infinite}
+.chip b{font-family:var(--h);font-size:1.05rem;display:block;line-height:1.1}.chip small{color:var(--mu)}
+.chip img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--cy)}
+.ca{left:-26px;bottom:-26px}.cb{right:-16px;top:-24px;animation-delay:-3s}
+@keyframes bo{50%{transform:translateY(-10px)}}
+.mq{border-block:1px solid var(--l1);padding:1.2rem 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mt{display:flex;gap:3rem;width:max-content;animation:sc 40s linear infinite}
+.mq span{font-family:var(--m);font-size:.95rem;color:var(--di);white-space:nowrap;display:inline-flex;align-items:center;gap:3rem}
+.mq span::after{content:"◆";font-size:.55rem;color:var(--cy);opacity:.6}
+@keyframes sc{to{transform:translateX(-50%)}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--l1);border:1px solid var(--l1);border-radius:var(--r);overflow:hidden}
+.st{background:var(--bg);padding:2rem 1.6rem}
+.st strong{display:block;font-family:var(--h);font-size:clamp(2.1rem,4vw,3.1rem);font-weight:700;line-height:1;letter-spacing:-.04em;margin-bottom:.5rem}
+.st span{color:var(--mu);font-size:.92rem}
+.card{position:relative;border-radius:var(--r);background:var(--s1);border:1px solid var(--l1);padding:2rem;overflow:hidden;transition:border-color .3s}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(34,211,238,.13),transparent 45%)}
+.card:hover{border-color:var(--l2)}.card:hover::before{opacity:1}
+.card p{color:var(--mu);font-size:.97rem}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:auto;padding-top:.6rem}
+.tags span{font-family:var(--m);font-size:.74rem;padding:.3rem .6rem;border-radius:8px;background:var(--s2);border:1px solid var(--l1);color:var(--mu)}
+.about{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:center}
+.ph{position:relative;border-radius:26px;padding:2px;background:var(--grad);box-shadow:0 30px 60px -25px rgba(34,211,238,.45),0 0 60px -20px rgba(139,92,246,.5)}
+.ph img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px}
+.ph figcaption{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-between;align-items:center;padding:.65rem .9rem;border-radius:14px;background:rgba(7,11,20,.8);backdrop-filter:blur(10px);border:1px solid var(--l2);font-size:.82rem}
+.ph figcaption b{font-family:var(--h);display:block}.ph figcaption small{color:var(--mu)}
+.ph figcaption span{color:var(--gr);font-weight:600;font-size:.75rem}
+figure{margin:0}
+.about p{color:var(--mu);font-size:1.05rem}.about p strong{color:var(--tx);font-weight:600}
+.tl{position:relative;list-style:none;margin:0 auto;padding:0 0 0 2.4rem;max-width:860px}
+.tl::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:var(--l1)}
+.tf{position:absolute;left:9px;top:8px;width:2px;height:0;background:var(--grad);box-shadow:0 0 12px rgba(34,211,238,.6)}
+.tl li{position:relative;padding-bottom:2.2rem}.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:calc(-2.4rem + 3px);top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--di);transition:all .4s}
+.tl li.lit::before{border-color:var(--cy);background:var(--cy);box-shadow:0 0 0 5px rgba(34,211,238,.15),0 0 18px rgba(34,211,238,.7)}
+.tl li.now::before{border-color:var(--vi);background:var(--vi);box-shadow:0 0 0 6px rgba(139,92,246,.2),0 0 24px rgba(139,92,246,.8)}
+.yr{font-family:var(--m);font-size:.8rem;color:var(--cy);letter-spacing:.06em}
+.tl h3{margin:.3rem 0 .1rem;font-size:1.25rem}
+.co{font-size:.9rem;color:var(--di);margin-bottom:.5rem}
+.tl p{color:var(--mu);font-size:.96rem;margin:0}
+.pg{display:grid;grid-template-columns:repeat(6,1fr);gap:1.1rem}
+.pg .card{display:flex;flex-direction:column;padding:0}
+.pg .bd{padding:1.8rem;display:flex;flex-direction:column;flex:1}
+.shot{aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--l1);background:#0b1220}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s}
+.card:hover .shot img{transform:scale(1.04)}
+.p1{grid-column:span 4}.p2{grid-column:span 2}.p3,.p4{grid-column:span 3}
+.p1 .shot{aspect-ratio:21/9}
+.lab{font-family:var(--m);font-size:.74rem;color:var(--cy);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem}
+.lk{display:inline-flex;gap:.4rem;align-items:center;margin-top:1rem;color:var(--cy);font-weight:700;text-decoration:none}
+.lk:hover{text-decoration:underline}
+.big{font-family:var(--h);font-weight:700;font-size:2.8rem;line-height:1;margin:.2rem 0 .8rem}
+.tk{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:1.1rem}
+.tk .card{display:flex;flex-direction:column}
+.tk .t1{grid-row:span 2;padding:0}
+.tk .t1 img{aspect-ratio:4/3;object-fit:cover;border-bottom:1px solid var(--l1)}
+.tk .t1 .bd{padding:1.8rem}
+.ce{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.ce .card{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.3rem}
+.ce img,.ce .ic{width:54px;height:54px;border-radius:12px;object-fit:cover;flex:none;background:#fff}
+.ce .ic{display:grid;place-items:center;font-family:var(--h);font-weight:700;color:#06111C;background:var(--grad);font-size:.9rem}
+.ce h3{font-size:1rem;margin:0 0 .15rem}.ce p{margin:0;font-size:.85rem}
+.sk{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.sk .card{padding:1.6rem}
+.sk h3{font-size:1.05rem;display:flex;align-items:center;gap:.6rem}
+.sk h3::before{content:"$";font-family:var(--m);color:var(--cy)}
+.who{display:grid;grid-template-columns:1.2fr .8fr;gap:4rem;align-items:center}
+.who p{color:var(--mu);font-size:1.05rem}
+.who img{border-radius:24px;aspect-ratio:3/4;object-fit:cover;border:1px solid var(--l2);box-shadow:0 30px 60px -25px rgba(0,0,0,.8)}
+.ct{border-radius:28px;padding:clamp(2rem,5vw,4rem);background:radial-gradient(circle at 0 0,rgba(14,116,144,.45),transparent 50%),radial-gradient(circle at 100% 100%,rgba(109,40,217,.4),transparent 50%),var(--bg2);border:1px solid var(--l2);text-align:center}
+.ct .cta{justify-content:center}
+.ft{border-top:1px solid var(--l1);padding:2.2rem 0;color:var(--di);font-size:.88rem}
+.ft .c{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--m)}
+.ft a{text-decoration:none}.ft a:hover{color:var(--tx)}
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .rv.vis-on{opacity:1;transform:none}
+@media (max-width:1000px){.hi,.about,.who{grid-template-columns:1fr}.term{transform:none}.stats{grid-template-columns:repeat(2,1fr)}.p1,.p2,.p3,.p4{grid-column:span 6}.tk{grid-template-columns:1fr 1fr}.tk .t1{grid-column:span 2;grid-row:auto}.ce{grid-template-columns:repeat(2,1fr)}.sk{grid-template-columns:1fr 1fr}.ca{left:-6px}.cb{right:-4px}.about figure{max-width:380px}}
+@media (max-width:760px){.tog{display:block}.nav{position:fixed;inset:72px 0 auto;flex-direction:column;align-items:stretch;gap:0;padding:.6rem 16px 1.2rem;background:rgba(7,11,20,.97);border-bottom:1px solid var(--l1);opacity:0;pointer-events:none;transform:translateY(-12px);transition:opacity .25s,transform .25s}.nav.open{opacity:1;pointer-events:auto;transform:none}.nav a:not(.btn){padding:.9rem 0;border-bottom:1px solid var(--l1);color:var(--tx)}.nav .btn{margin-top:1rem}.top.mo{background:rgba(7,11,20,.97)}.tog[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}.tog[aria-expanded="true"] span:nth-child(2){opacity:0}.tog[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}.hero{min-height:auto;padding-top:110px}.cta .btn{width:100%}.chip{display:none}.term pre{font-size:.74rem;min-height:260px;padding:1.1rem}.st{padding:1.4rem 1.1rem}.tk,.ce,.sk{grid-template-columns:1fr}.tk .t1{grid-column:auto}.tl{padding-left:2rem}.tl li::before{left:calc(-2rem + 3px)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.js .rv{opacity:1;transform:none}.term{transform:none}}
+</style>
 </head>
 <body>
+<div class="prog" aria-hidden="true"></div>
+<header class="top">
+  <div class="c">
+    <a href="#inicio" class="brand" aria-label="Erickson Queiroz, início">erickson<b>@ops</b><i></i></a>
+    <button class="tog" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    <nav class="nav" id="menu">
+      <a href="#sobre">Sobre</a><a href="#carreira">Carreira</a><a href="#projetos">Projetos</a><a href="#palestras">Palestras</a><a href="#certificacoes">Certificações</a>
+      <a href="#contato" class="btn sm">Contato</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- Gerador de placeholder local (sem depender de serviço externo) -->
-    <script>
-        function ph(text, w, h, bg, fg) {
-            bg = bg || '0b121f'; fg = fg || '00e5ff';
-            var size = Math.max(12, Math.round(Math.min(w, h) / 9));
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
-                '<rect width="100%" height="100%" fill="#' + bg + '"/>' +
-                '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" ' +
-                'font-family="monospace" font-size="' + size + '" fill="#' + fg + '">' + text + '</text>' +
-                '</svg>';
-            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-        }
-    </script>
+<main>
+<section class="hero" id="inicio">
+  <div class="aur" aria-hidden="true"><i></i><i></i><i></i></div>
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="c hi">
+    <div>
+      <div class="badge rv"><b>Disponível</b> Aberto a oportunidades remotas</div>
+      <h1 class="rv" style="--d:.06s">Erickson <span class="gt">Queiroz</span></h1>
+      <p class="role rv" style="--d:.12s">Eu automatizo <span class="rot"><span class="gt">infraestrutura</span></span></p>
+      <p class="lead rv" style="--d:.18s">Analista de Aplicação e Infraestrutura com foco em <strong>DevOps, SRE e AIOps</strong>. Transformo operações manuais em automações conteinerizadas e observáveis com Python, Docker, Kubernetes e IA local.</p>
+      <div class="cta rv" style="--d:.24s">
+        <a class="btn" href="#projetos">Ver projetos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn gh" href="https://www.linkedin.com/in/erickson-queiroz/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn gh" href="https://github.com/Erickson45" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="meta rv" style="--d:.3s"><span>São Miguel/RN</span><span>Remoto</span><span>+5 anos em TI</span></div>
+    </div>
+    <div class="vis rv" style="--d:.2s">
+      <div class="term" aria-hidden="true">
+        <div class="tb"><i></i><i></i><i></i><span>erickson@ops: ~/infra</span></div>
+        <pre id="typed"></pre>
+      </div>
+      <div class="chip ca" aria-hidden="true"><img src="perfil.jpg" alt=""><div><b>Erickson</b><small>DevOps · SRE · AIOps</small></div></div>
+      <div class="chip cb" aria-hidden="true"><div><b class="gt">−60%</b><small>tempo de abertura de chamados</small></div></div>
+    </div>
+  </div>
+</section>
 
-    <!-- Fundo de Luz Inteligente -->
-    <div class="bg-glow-static"></div>
-    <div class="mouse-glow" id="mouse-glow"></div>
-    <canvas id="neural-canvas"></canvas>
+<div class="mq" aria-label="Tecnologias">
+  <div class="mt">
+    <span>Python</span><span>Docker</span><span>Kubernetes</span><span>Rancher</span><span>Zabbix</span><span>Grafana</span><span>RabbitMQ</span><span>PostgreSQL</span><span>Redis</span><span>Celery</span><span>Nginx</span><span>GitHub Actions</span><span>Ollama</span><span>RAG</span><span>Linux</span>
+    <span aria-hidden="true">Python</span><span aria-hidden="true">Docker</span><span aria-hidden="true">Kubernetes</span><span aria-hidden="true">Rancher</span><span aria-hidden="true">Zabbix</span><span aria-hidden="true">Grafana</span><span aria-hidden="true">RabbitMQ</span><span aria-hidden="true">PostgreSQL</span><span aria-hidden="true">Redis</span><span aria-hidden="true">Celery</span><span aria-hidden="true">Nginx</span><span aria-hidden="true">GitHub Actions</span><span aria-hidden="true">Ollama</span><span aria-hidden="true">RAG</span><span aria-hidden="true">Linux</span>
+  </div>
+</div>
 
-    <header id="navbar">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="#" class="logo">Erickson<span>_</span></a>
-            <nav>
-                <ul>
-                    <li><a href="#hero" class="active">Home</a></li>
-                    <li><a href="#sobre">História</a></li>
-                    <li><a href="#jornada">Carreira</a></li>
-                    <li><a href="#projetos">Projetos</a></li>
-                    <li><a href="#certificacoes">Certs</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<section class="sec" style="padding-bottom:0">
+  <div class="c">
+    <div class="stats rv">
+      <div class="st"><strong class="gt"><span data-n="7" data-p="5–">5–7</span> mil</strong><span>alertas por dia em ambientes críticos</span></div>
+      <div class="st"><strong class="gt"><span data-n="60" data-p="−">−60</span>%</strong><span>no tempo de abertura de chamados com o Atlas</span></div>
+      <div class="st"><strong class="gt">~<span data-n="2">2</span> min</strong><span>do alerta ao diagnóstico com IA (A.I.D.A.)</span></div>
+      <div class="st"><strong class="gt"><span data-n="20" data-p="+">+20</span>h</strong><span>de trabalho manual eliminadas por mês</span></div>
+    </div>
+  </div>
+</section>
 
-    <main>
-        <!-- HERO -->
-        <section id="hero">
-            <div class="container">
-                <div class="hero-grid">
-                    <div class="hero-content fade-in-up">
-                        <span class="section-tag">Status: Online</span>
-                        <h1>Erickson <br> <span class="gradient-text">Queiroz</span></h1>
-                        <p>
-                            Analista de Aplicação e Infraestrutura com foco em <strong>DevOps</strong>, <strong>SRE</strong> e <strong>AIOps</strong>. Transformo operações manuais em automações conteinerizadas e observáveis com <strong>Python</strong>, <strong>Docker</strong>, <strong>Kubernetes</strong> e <strong>IA Local</strong> — como o Atlas, que reduziu em 60% o tempo de abertura de chamados.
-                        </p>
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap;"> 
-                            <a href="#projetos" class="btn">
-                                <ion-icon name="code-working-outline"></ion-icon> Ver Projetos
-                            </a>
-                            <a href="https://github.com/erickson45" target="_blank" class="btn btn-outline">
-                                <ion-icon name="logo-github"></ion-icon> GitHub
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="profile-wrapper fade-in-up">
-                        <div class="tech-frame">
-                            <img src="perfil.jpg" alt="Erickson Queiroz" class="profile-img" onerror="this.onerror=null;this.src=ph('Erickson',350,350,'0a0f18','00e5ff')">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section class="sec" id="sobre">
+  <div class="c about">
+    <figure class="ph rv"><img src="perfil.jpg" alt="Erickson Queiroz" width="400" height="400"><figcaption><div><b>Erickson Queiroz</b><small>Analista de Aplicação e Infraestrutura</small></div><span>● online</span></figcaption></figure>
+    <div>
+      <p class="ey rv">Sobre</p>
+      <h2 class="rv">Resiliência e <span class="gt">evolução contínua</span></h2>
+      <p class="rv">Comecei no suporte técnico e no monitoramento de grandes redes, onde aprendi como a infraestrutura se comporta quando tudo dá errado e a manter a calma em incidentes críticos.</p>
+      <p class="rv">Com o tempo, desenvolvi uma obsessão por eliminar o trabalho manual (<strong>toil</strong>). Hoje crio automações e práticas de observabilidade, uso engenharia de software e <strong>IA local</strong> para orquestrar ferramentas e garantir estabilidade operacional em larga escala.</p>
+      <p class="rv">Meu trabalho mais conhecido é o <strong>Atlas</strong>, uma plataforma de AIOps usada por 20 analistas, que processa ~5 mil alertas por dia e reduziu em 60% o tempo de abertura de chamados.</p>
+    </div>
+  </div>
+</section>
 
-        <!-- SOBRE -->
-        <section id="sobre" class="story-section">
-            <div class="container">
-                <div class="glass-card fade-in-up">
-                    <div class="story-grid">
-                        <div class="story-icon">
-                            <ion-icon name="terminal-outline"></ion-icon>
-                        </div>
-                        <div class="story-text">
-                            <h3>Resiliência & Evolução Contínua</h3>
-                            <p>
-                                Minha trajetória é marcada pela forte capacidade de adaptação e resolução de problemas estruturais. Iniciei minha jornada em suporte técnico e monitoramento de infraestrutura, onde construí uma base sólida sobre o comportamento e a resiliência de grandes redes.
-                            </p>
-                            <p>
-                                Ao longo do tempo, desenvolvi uma mentalidade voltada para a eficiência corporativa, buscando ativamente eliminar o trabalho manual (toil). Minhas experiências me ensinaram a manter a calma em incidentes críticos e a focar rapidamente no restabelecimento e na solução raiz.
-                            </p>
-                            <p>
-                                Hoje, concentro minha atuação na criação de sistemas de automação e práticas de observabilidade. Utilizo engenharia de software e recursos de IA para orquestrar ferramentas, garantir estabilidade operacional e entregar resultados em larga escala.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section class="sec" id="carreira" style="padding-top:0">
+  <div class="c">
+    <div class="hd"><p class="ey rv">Carreira</p><h2 class="rv">Do primeiro chamado <span class="gt">à automação</span></h2></div>
+    <div style="position:relative">
+      <span class="tf" aria-hidden="true"></span>
+      <ol class="tl" id="tl">
+        <li class="rv now"><div class="yr">mai/2026 — atual</div><h3>Analista de Aplicação e Infraestrutura</h3><div class="co">Softplan</div><p>Responsável pelas automações do setor. Opero ambientes críticos com 5 a 7 mil alertas/dia, workloads em Kubernetes (Rancher) e filas RabbitMQ. Criei o Atlas (−60% no tempo de abertura de chamados) e a A.I.D.A., que entrega diagnósticos em ~2 min.</p></li>
+        <li class="rv"><div class="yr">out/2025 — mai/2026</div><h3>Técnico de Infraestrutura</h3><div class="co">Softplan</div><p>Suporte e sustentação da infraestrutura, acompanhando de perto o NOC e o ciclo de vida de incidentes. Base que levou à promoção e deu origem ao Atlas.</p></li>
+        <li class="rv"><div class="yr">out/2024 — set/2025</div><h3>Analista de Telecomunicações</h3><div class="co">Brisanet</div><p>Automações em Python e Google Apps Script, dashboards executivos de performance de uma rede 4G/5G com ~1.000 sites e dados para decisão técnica. Palestra de IA para 50 profissionais.</p></li>
+        <li class="rv"><div class="yr">mai/2024 — set/2024</div><h3>Analista de NOC</h3><div class="co">MDsystems</div><p>Monitoramento proativo e observabilidade 24/7 de servidores, firewalls e backups com Zabbix, Grafana, Fortinet e Barracuda.</p></li>
+        <li class="rv"><div class="yr">set/2023 — mai/2024</div><h3>Analista de Suporte Técnico</h3><div class="co">Tivit</div><p>Sustentação N2/N3 para grandes contas corporativas, ~80 chamados por dia dentro do SLA, e mentoria voluntária no Instituto TIVIT.</p></li>
+        <li class="rv"><div class="yr">out/2022 — mai/2023</div><h3>Suporte Técnico (Estágio)</h3><div class="co">DBcorp</div><p>Suporte a sistemas ERP e usuários internos; primeiro contato com ambientes corporativos de grande porte.</p></li>
+        <li class="rv"><div class="yr">out/2021 — out/2022</div><h3>Técnico de Instalação → Técnico de TI</h3><div class="co">Telecardio</div><p>Promovido em 6 meses. Redes, VPNs e equipamentos de telemedicina em cerca de 80 unidades, em ambiente on-premise.</p></li>
+        <li class="rv"><div class="yr">nov/2019 — dez/2020</div><h3>Início de carreira</h3><div class="co">Brisanet · primeiro emprego</div><p>Suporte técnico de conectividade a clientes: onde construí a base de infraestrutura e o foco em resolver problemas.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
 
-        <!-- JORNADA -->
-        <section id="jornada" style="padding: 4rem 0;">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">// Carreira</span>
-                    <h2 class="section-title">Minha Jornada</h2>
-                </div>
+<section class="sec" id="projetos" style="padding-top:0">
+  <div class="c">
+    <div class="hd"><p class="ey rv">Projetos</p><h2 class="rv">O que eu <span class="gt">coloquei em produção</span></h2><p class="lead rv">Do monitoramento à IA local: sistemas reais, com impacto medido.</p></div>
+    <div class="pg">
+      <article class="card p1 rv">
+        <div class="shot"><img src="atlas.png" alt="Tela do Atlas, plataforma de AIOps" loading="lazy"></div>
+        <div class="bd"><p class="lab">Plataforma interna · Softplan</p><h3>Atlas — Plataforma de AIOps</h3>
+        <p>Centraliza ~5 mil alertas/dia do Zabbix, correlaciona incidentes, auto-atribui chamados e notifica o time no Teams. Usada por 20 analistas, reduziu o tempo de abertura de chamados de 20 para 8 minutos. Inclui a A.I.D.A., assistente com RAG que diagnostica em ~2 min.</p>
+        <div class="tags"><span>Python / Flask</span><span>Docker</span><span>PostgreSQL</span><span>Redis / Celery</span><span>Zabbix API</span><span>RAG</span></div>
+        <a class="lk" href="https://github.com/Erickson45/Atlas-Zabbix" target="_blank" rel="noopener">Ver módulo no GitHub →</a></div>
+      </article>
+      <article class="card p2 rv" style="--d:.08s">
+        <div class="bd"><p class="lab">Open source</p><h3>SRE-Copilot</h3><p class="big gt">AIOps</p>
+        <p>Middleware que recebe webhooks do Zabbix/Prometheus, cruza o alerta com runbooks via RAG e usa um LLM local (Ollama) para entregar causa provável e mitigação no chat. CI/CD com lint, testes, build e smoke test.</p>
+        <div class="tags"><span>Flask</span><span>Ollama</span><span>Docker Compose</span><span>GitHub Actions</span></div>
+        <a class="lk" href="https://github.com/Erickson45/sre-copilot" target="_blank" rel="noopener">Ver código →</a></div>
+      </article>
+      <article class="card p3 rv">
+        <div class="shot"><img src="dash.png" alt="Dashboard de indicadores da rede" loading="lazy"></div>
+        <div class="bd"><p class="lab">Automação · Brisanet</p><h3>Relatórios automáticos de rede</h3>
+        <p>Automações em Python e Apps Script no Google Cloud que liam indicadores de ~1.000 sites 4G/5G, geravam gráficos e enviavam relatórios diários, eliminando mais de 20 h/mês de trabalho manual.</p>
+        <div class="tags"><span>Python</span><span>Apps Script</span><span>Google Cloud</span></div></div>
+      </article>
+      <article class="card p4 rv" style="--d:.08s">
+        <div class="bd"><p class="lab">Projeto pessoal · open source</p><h3>Nativy — tradução simultânea com IA</h3><p class="big gt">100% local</p>
+        <p>Chamadas de vídeo via WebRTC com tradução simultânea por IA local (Whisper + Ollama), pensado para profissionais de TI em entrevistas e reuniões em inglês.</p>
+        <div class="tags"><span>FastAPI</span><span>WebRTC</span><span>Whisper</span><span>Ollama</span></div>
+        <a class="lk" href="https://github.com/Erickson45/nativy" target="_blank" rel="noopener">Ver código →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
 
-                <div class="timeline-wrapper">
-                    <div class="timeline-line"></div>
+<section class="sec" id="palestras" style="padding-top:0">
+  <div class="c">
+    <div class="hd"><p class="ey rv">Palestras &amp; Comunidade</p><h2 class="rv">Compartilhando <span class="gt">o que aprendi</span></h2></div>
+    <div class="tk">
+      <article class="card t1 rv"><img src="brisanet.png" alt="Erickson palestrando sobre IA para profissionais" loading="lazy"><div class="bd"><p class="lab">Treinamentos corporativos</p><h3>IA no ambiente de trabalho</h3><p>Palestra sobre o impacto da IA para 50 profissionais na Brisanet e treinamento de IA para o time da Softplan.</p><a class="lk" href="https://www.linkedin.com/in/erickson-queiroz/recent-activity/all/" target="_blank" rel="noopener">Ver posts →</a></div></article>
+      <article class="card rv" style="--d:.06s"><p class="lab">TDC Community · out/2026</p><h3>IA Todos os Dias: Agentes, Automações e Produtividade na Vida Real</h3><p>Workshop do básico ao caso real: prompt, segurança, automações, limitações e uma plataforma feita com IA.</p><a class="lk" href="https://comunidade.thedevconf.com/c/workshops/workshop-ia-todos-os-dias-agentes-automacoes-e-produtividade-na-vida-real" target="_blank" rel="noopener">Ver workshop →</a></article>
+      <article class="card rv" style="--d:.12s"><p class="lab">Meetup Tec Group · jan/2026</p><h3>Introdução à IA para Desenvolvedores: Do Código ao Neurônio</h3><p>Como a IA funciona por dentro e como usá-la no desenvolvimento.</p><a class="lk" href="https://www.youtube.com/watch?v=fWiAQzqXwFU" target="_blank" rel="noopener">Assistir no YouTube →</a></article>
+      <article class="card rv" style="--d:.06s"><p class="lab">Instituto TIVIT</p><h3>Mentoria voluntária</h3><p>Mentoria de 2 jovens no início da carreira em tecnologia.</p></article>
+      <article class="card rv" style="--d:.12s"><p class="lab">Softplan</p><h3>Multiplicador de inovação</h3><p>Treinamento interno sobre IA para 12 colegas do time.</p></article>
+    </div>
+  </div>
+</section>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Analista de Aplicação e Infraestrutura</span>
-                                <span class="job-company">Softplan • Mai/2026 - Atual</span>
-                            </div>
-                            <p class="job-desc">Responsável pelas automações do setor. Opero ambientes críticos com 5 a 7 mil alertas/dia, workloads em Kubernetes (Rancher) e filas RabbitMQ. Criei o Atlas (-60% no tempo de abertura de chamados) e a A.I.D.A., que entrega diagnósticos em ~2 min.</p>
-                        </div>
-                    </div>
+<section class="sec" id="certificacoes" style="padding-top:0">
+  <div class="c">
+    <div class="hd"><p class="ey rv">Certificações</p><h2 class="rv">Estudo <span class="gt">contínuo</span></h2></div>
+    <div class="ce">
+      <div class="card rv"><img src="blob.png" alt="" loading="lazy"><div><h3>Analista de IA</h3><p>Google</p></div></div>
+      <div class="card rv"><img src="software-engineering-essentials.png" alt="" loading="lazy"><div><h3>Software Engineering Essentials</h3><p>IBM</p></div></div>
+      <div class="card rv"><img src="cisco.png" alt="" loading="lazy"><div><h3>Analista de Cibersegurança Jr.</h3><p>Cisco</p></div></div>
+      <div class="card rv"><img src="google.jpg" alt="" loading="lazy"><div><h3>Cybersecurity Certificate</h3><p>Google</p></div></div>
+      <div class="card rv"><img src="google.jpg" alt="" loading="lazy"><div><h3>Linux and SQL</h3><p>Google</p></div></div>
+      <div class="card rv"><span class="ic">IA</span><div><h3>Especialista em IA</h3><p>Alura</p></div></div>
+      <div class="card rv"><span class="ic">AWS</span><div><h3>AWS</h3><p>Santander Academy</p></div></div>
+      <div class="card rv"><span class="ic">ADS</span><div><h3>Análise e Desenv. de Sistemas</h3><p>Descomplica · cursando</p></div></div>
+    </div>
+  </div>
+</section>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Técnico de Infraestrutura</span>
-                                <span class="job-company">Softplan • Out/2025 - Mai/2026</span>
-                            </div>
-                            <p class="job-desc">Suporte e sustentação da infraestrutura de TI, acompanhando de perto a operação de NOC e o ciclo de vida de incidentes — base que levou à promoção e deu origem ao Atlas.</p>
-                        </div>
-                    </div>
+<section class="sec" id="stack" style="padding-top:0">
+  <div class="c">
+    <div class="hd"><p class="ey rv">Stack</p><h2 class="rv">Ferramentas <span class="gt">do dia a dia</span></h2></div>
+    <div class="sk">
+      <div class="card rv"><h3>DevOps &amp; Infra</h3><div class="tags"><span>Linux</span><span>Docker</span><span>Kubernetes</span><span>Rancher</span><span>Nginx</span><span>Git</span><span>GitHub Actions</span></div></div>
+      <div class="card rv" style="--d:.06s"><h3>Observabilidade</h3><div class="tags"><span>Zabbix</span><span>Grafana</span><span>Gestão de incidentes</span><span>MTTR</span><span>SLA</span></div></div>
+      <div class="card rv" style="--d:.12s"><h3>IA &amp; AIOps</h3><div class="tags"><span>Ollama</span><span>RAG</span><span>LLM local</span><span>Whisper</span><span>Busca semântica</span></div></div>
+      <div class="card rv"><h3>Backend &amp; Dados</h3><div class="tags"><span>Python</span><span>Flask</span><span>FastAPI</span><span>PostgreSQL</span><span>Redis</span><span>SQLAlchemy</span></div></div>
+      <div class="card rv" style="--d:.06s"><h3>Mensageria</h3><div class="tags"><span>RabbitMQ</span><span>Celery</span><span>WebSockets</span><span>Webhooks</span></div></div>
+      <div class="card rv" style="--d:.12s"><h3>Integrações</h3><div class="tags"><span>Microsoft Graph</span><span>Teams</span><span>Azure AD</span><span>Power Automate</span><span>Google Cloud</span></div></div>
+    </div>
+  </div>
+</section>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Analista de Telecomunicações</span>
-                                <span class="job-company">Brisanet • Out/2024 - Set/2025</span>
-                            </div>
-                            <p class="job-desc">Criação de automações operacionais com Python, elaboração de Dashboards executivos de performance de redes e aplicação de inteligência de dados na tomada de decisão técnica.</p>
-                        </div>
-                    </div>
+<section class="sec" id="quem" style="padding-top:0">
+  <div class="c who">
+    <div>
+      <p class="ey rv">Fora do terminal</p>
+      <h2 class="rv">Quem é o <span class="gt">Erickson?</span></h2>
+      <p class="rv">Sou movido a resolver problemas de infraestrutura e entusiasta de confiabilidade (SRE/AIOps). Tenho muito orgulho das minhas raízes nordestinas e levo a mesma determinação para o meu progresso diário em tecnologia.</p>
+      <p class="rv">Acredito que a tecnologia deve simplificar a vida das pessoas. Quando não estou criando automações, estou em jogos online, trocando ideia com a comunidade de TI ou fazendo trilha ao ar livre.</p>
+    </div>
+    <img class="rv" src="eu.jpg" alt="Erickson numa trilha no sertão do Rio Grande do Norte" loading="lazy">
+  </div>
+</section>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Analista de NOC</span>
-                                <span class="job-company">MDsystems • Mai/2024 - Set/2024</span>
-                            </div>
-                            <p class="job-desc">Monitoramento proativo e observabilidade 24/7, garantindo a rápida identificação e contenção de incidentes críticos de infraestrutura de rede.</p>
-                        </div>
-                    </div>
+<section class="sec" id="contato" style="padding-top:0">
+  <div class="c">
+    <div class="ct rv">
+      <p class="ey">Contato</p>
+      <h2>Vamos <span class="gt">conversar?</span></h2>
+      <p class="lead" style="margin-inline:auto">Aberto a oportunidades remotas em DevOps, SRE e Infraestrutura, e a trocar ideia sobre automação e IA.</p>
+      <div class="cta">
+        <a class="btn" href="mailto:erickson.queiroz65@gmail.com">Enviar e-mail</a>
+        <a class="btn gh" href="https://www.linkedin.com/in/erickson-queiroz/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn gh" href="https://github.com/Erickson45" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Analista de Suporte Técnico</span>
-                                <span class="job-company">Tivit • Set/2023 - Mai/2024</span>
-                            </div>
-                            <p class="job-desc">Sustentação especializada N2/N3 focada na estabilidade e no atendimento ágil para infraestrutura de grandes contas corporativas.</p>
-                        </div>
-                    </div>
+<footer class="ft"><div class="c"><span>© <span id="ano">2026</span> Erickson Queiroz</span><span class="k">root@ops:~$ auto-resolve --success</span><a href="#inicio">topo ↑</a></div></footer>
 
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Suporte Técnico (Estágio)</span>
-                                <span class="job-company">DBcorp • Out/2022 - Mai/2023</span>
-                            </div>
-                            <p class="job-desc">Estágio em suporte técnico com foco em sistemas ERP, atendimento a usuários internos e primeiro contato com ambientes corporativos de grande porte.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Técnico de TI</span>
-                                <span class="job-company">Telecardio • Abr/2022 - Out/2022</span>
-                            </div>
-                            <p class="job-desc">Promovido após 6 meses como Técnico de Instalação. Manutenção de ambiente on-premise, suporte a hardware e configuração de VPNs.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-marker"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Técnico de Instalação</span>
-                                <span class="job-company">Telecardio • Out/2021 - Abr/2022</span>
-                            </div>
-                            <p class="job-desc">Instalação, configuração e manutenção de equipamentos de rede e VPNs em ambiente on-premise, com atendimento direto a usuários e áreas internas — atuação que levou à promoção para Técnico de TI.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-marker" style="border-color: var(--neon-secondary); box-shadow: 0 0 10px var(--neon-secondary);"></div>
-                        <div class="job-card">
-                            <div class="job-header">
-                                <span class="job-role">Início de Carreira</span>
-                                <span class="job-company">Brisanet (Primeiro Emprego) • Nov/2019 - Dez/2020</span>
-                            </div>
-                            <p class="job-desc">Ponto de partida no mercado corporativo, onde construí minhas bases técnicas de infraestrutura e desenvolvi um forte foco na resolução de problemas sistêmicos.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJETOS -->
-        <section id="projetos" style="padding: 4rem 0;">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">// Deployments</span>
-                    <h2 class="section-title">Projetos & Talks</h2>
-                </div>
-
-                <div class="projects-grid">
-
-                    <div class="project-card fade-in-up">
-                        <div class="card-media">
-                            <img src="atlas.png" alt="Atlas AIOps" onerror="this.onerror=null;this.src=ph('Atlas AIOps',600,400,'0b121f','00e5ff')">
-                        </div>
-                        <div class="card-content">
-                            <h3>Atlas — Plataforma de AIOps</h3>
-                            <p>Plataforma interna que criei na Softplan: centraliza ~5 mil alertas/dia do Zabbix, correlaciona incidentes, auto-atribui chamados e notifica o time no Teams. Usada por 20 analistas, reduziu em <strong>60%</strong> o tempo de abertura de chamados (de 20 para 8 min). Inclui a A.I.D.A., assistente com RAG que entrega diagnósticos em ~2 min.</p>
-                            <div class="card-action">
-                                <span class="card-tag">Python / Flask</span>
-                                <span class="card-tag">Docker</span>
-                                <span class="card-tag">PostgreSQL / Redis / Celery</span>
-                                <span class="card-tag">Zabbix API</span>
-                            </div>
-                            <div class="card-action" style="margin-top: 10px;">
-                                <a href="https://github.com/Erickson45/Atlas-Zabbix" target="_blank" class="card-link">
-                                    <ion-icon name="logo-github"></ion-icon> Ver Módulo
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card fade-in-up">
-                        <div class="card-media">
-                            <div class="card-icon-placeholder"><ion-icon name="pulse-outline"></ion-icon></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>SRE-Copilot — AIOps Incident Gateway</h3>
-                            <p>Middleware que recebe webhooks do Zabbix/Prometheus, cruza o alerta com runbooks via RAG e usa um LLM local (Ollama) para entregar causa provável e comandos de mitigação no chat do time. Sobe com Docker Compose.</p>
-                            <div class="card-action">
-                                <span class="card-tag">Python / Flask</span>
-                                <span class="card-tag">Docker Compose</span>
-                                <span class="card-tag">Ollama / RAG</span>
-                                <span class="card-tag">Webhooks</span>
-                            </div>
-                            <div class="card-action" style="margin-top: 10px;">
-                                <a href="https://github.com/Erickson45/sre-copilot" target="_blank" class="card-link">
-                                    <ion-icon name="logo-github"></ion-icon> Ver Código
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card fade-in-up">
-                        <div class="card-media">
-                            <div class="card-icon-placeholder"><ion-icon name="language-outline"></ion-icon></div>
-                        </div>
-                        <div class="card-content">
-                            <h3>Nativy — Tradução Simultânea com IA</h3>
-                            <p>Projeto pessoal open-source: chamadas de vídeo via WebRTC com tradução simultânea assistida por IA 100% local (Whisper + Ollama), pensado para profissionais de TI em entrevistas e reuniões em inglês.</p>
-                            <div class="card-action">
-                                <span class="card-tag">Python / FastAPI</span>
-                                <span class="card-tag">WebRTC</span>
-                                <span class="card-tag">LLM Local</span>
-                            </div>
-                            <div class="card-action" style="margin-top: 10px;">
-                                <a href="https://github.com/Erickson45/nativy" target="_blank" class="card-link">
-                                    <ion-icon name="logo-github"></ion-icon> Ver Código
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card fade-in-up">
-                        <div class="card-media">
-                            <img src="dash.png" alt="Automação de Relatórios" onerror="this.onerror=null;this.src=ph('Relatórios',600,400,'0b121f','00e5ff')">
-                        </div>
-                        <div class="card-content">
-                            <h3>Automação de Relatórios — Brisanet</h3>
-                            <p>Automações em Python e Google Apps Script integradas ao Google Cloud que liam indicadores de ~1.000 sites 4G/5G, geravam gráficos e enviavam relatórios diários aos gestores — eliminando mais de <strong>20 h/mês</strong> de trabalho manual.</p>
-                            <div class="card-action">
-                                <span class="card-tag">Python</span>
-                                <span class="card-tag">Google Apps Script</span>
-                                <span class="card-tag">Google Cloud</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card fade-in-up">
-                        <div class="card-media">
-                            <img src="brisanet.png" alt="Palestras Tech" onerror="this.onerror=null;this.src=ph('Talk IA',600,400,'0b121f','00e5ff')">
-                        </div>
-                        <div class="card-content">
-                            <h3>Palestras & Mentoria</h3>
-                            <p>Palestra sobre IA para 50 profissionais na Brisanet, treinamento de IA para o time da Softplan e mentoria voluntária no Instituto TIVIT.</p>
-                            <div class="card-action">
-                                <span class="card-tag">Inteligência Artificial</span>
-                                <span class="card-tag">Treinamento</span>
-                                <span class="card-tag">Mentoria</span>
-                            </div>
-                            <div class="card-action" style="margin-top: 10px;">
-                                <a href="https://www.linkedin.com/in/erickson-queiroz/recent-activity/all/" target="_blank" class="card-link">
-                                    <ion-icon name="logo-linkedin"></ion-icon> Ver Posts
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- CERTIFICAÇÕES -->
-        <section id="certificacoes" style="padding: 4rem 0;">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">// Badges</span>
-                    <h2 class="section-title">Certificações</h2>
-                </div>
-                <div class="cert-grid">
-                    <div class="cert-card fade-in-up">
-                        <div class="cert-img">
-                            <img src="blob.png" alt="Google AI" onerror="this.onerror=null;this.src=ph('G',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Google AI</h3>
-                            <p>Google</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.2s;">
-                        <div class="cert-img">
-                            <img src="software-engineering-essentials.png" alt="IBM Software Engineering Essentials" onerror="this.onerror=null;this.src=ph('IBM',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Software Engineering Essentials</h3>
-                            <p>IBM</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.3s;">
-                        <div class="cert-img">
-                            <img src="cisco.png" alt="Cisco Analista de Cibersegurança Júnior" onerror="this.onerror=null;this.src=ph('Cisco',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Analista de Cibersegurança Júnior</h3>
-                            <p>Cisco</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.4s;">
-                        <div class="cert-img">
-                            <img src="data:," alt="Alura Especialista em IA" onerror="this.onerror=null;this.src=ph('Alura',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Especialista em IA</h3>
-                            <p>Alura</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.5s;">
-                        <div class="cert-img">
-                            <img src="data:," alt="Santander Academy AWS" onerror="this.onerror=null;this.src=ph('AWS',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>AWS</h3>
-                            <p>Santander Academy</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.6s;">
-                        <div class="cert-img">
-                            <img src="google.jpg" alt="Google Cybersecurity Certificate" onerror="this.onerror=null;this.src=ph('G',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Cybersecurity Certificate</h3>
-                            <p>Google</p>
-                        </div>
-                    </div>
-                    <div class="cert-card fade-in-up" style="transition-delay: 0.7s;">
-                        <div class="cert-img">
-                            <img src="google.jpg" alt="Google Linux and SQL" onerror="this.onerror=null;this.src=ph('G',80,80,'ffffff','000000')">
-                        </div>
-                        <div class="cert-info">
-                            <h3>Tools of the Trade: Linux and SQL</h3>
-                            <p>Google</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TECH STACK -->
-        <section id="skills" style="padding: 2rem 0;">
-            <div class="container">
-                <div class="section-header" style="margin-bottom: 2rem;">
-                    <span class="section-tag">// Environment</span>
-                    <h2 class="section-title">Tech Stack</h2>
-                </div>
-                <div class="skills-container">
-                    <div class="skill-capsule"><ion-icon name="logo-python"></ion-icon> Python & Integração de APIs</div>
-                    <div class="skill-capsule"><ion-icon name="hardware-chip-outline"></ion-icon> IA Local & LLMs na Operação</div>
-                    <div class="skill-capsule"><ion-icon name="pulse-outline"></ion-icon> Observabilidade (Zabbix & Grafana)</div>
-                    <div class="skill-capsule"><ion-icon name="cube-outline"></ion-icon> PostgreSQL & Bancos de Dados</div>
-                    <div class="skill-capsule"><ion-icon name="server-outline"></ion-icon> Linux & Administração de Servidores</div>
-                    <div class="skill-capsule"><ion-icon name="git-branch-outline"></ion-icon> Docker, Deploy e Automação Operacional</div>
-                    <div class="skill-capsule"><ion-icon name="layers-outline"></ion-icon> Kubernetes & Rancher</div>
-                    <div class="skill-capsule"><ion-icon name="swap-horizontal-outline"></ion-icon> RabbitMQ, Redis & Celery</div>
-                    <div class="skill-capsule"><ion-icon name="globe-outline"></ion-icon> Nginx & Git</div>
-                    <div class="skill-capsule"><ion-icon name="code-slash-outline"></ion-icon> FastAPI & Flask</div>
-                    <div class="skill-capsule"><ion-icon name="people-outline"></ion-icon> Microsoft Graph & Teams</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PESSOAL (FOTOS VIBRANTES) -->
-        <section id="pessoal">
-            <div class="container">
-                <div class="personal-card fade-in-up">
-                    <div class="personal-text">
-                        <h2>Quem é o Erickson?</h2>
-                        <p>
-                            Sou um profissional movido pela resolução lógica de problemas de infraestrutura e entusiasta em práticas de confiabilidade (SRE/AIOps). Tenho muito orgulho das minhas raízes nordestinas e aplico a mesma determinação incansável no meu progresso diário em tecnologia.
-                        </p>
-                        <p>
-                            Acredito firmemente que a tecnologia deve servir como um mecanismo para simplificar a vida humana. Quando não estou arquitetando automações, busco o equilíbrio dedicando meu tempo livre a jogos online, conexões valiosas na comunidade de T.I e trilhas ao ar livre.
-                        </p>
-                    </div>
-                    <div class="personal-img-wrapper">
-                        <img src="eu.jpg" alt="Foto Pessoal" class="personal-img" onerror="this.onerror=null;this.src=ph('Erickson',280,280,'0b121f','00e5ff')">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTATO -->
-        <section id="contato" class="contact-section">
-            <div class="container">
-                <div class="section-header" style="margin-bottom: 2rem;">
-                    <span class="section-tag">// Networking</span>
-                    <h2 class="section-title">Vamos Conversar?</h2>
-                </div>
-                <div class="social-links">
-                    <a href="mailto:erickson.queiroz65@gmail.com" class="btn">
-                        <ion-icon name="mail-outline"></ion-icon> Enviar E-mail
-                    </a>
-                    <a href="https://www.linkedin.com/in/erickson-queiroz/" target="_blank" class="btn btn-outline">
-                        <ion-icon name="logo-linkedin"></ion-icon> LinkedIn
-                    </a>
-                    <a href="https://github.com/erickson45" target="_blank" class="btn btn-outline">
-                        <ion-icon name="logo-github"></ion-icon> GitHub
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <p>&copy; 2026 Erickson Queiroz.</p>
-            <p style="color: var(--neon-primary);">root@ops:~$ auto-resolve --success</p>
-        </div>
-    </footer>
-
-    <script>
-        // --- EFEITO GLOW MOUSE (Fator UAU) ---
-        const mouseGlow = document.getElementById('mouse-glow');
-        let mouseX = 0;
-        let mouseY = 0;
-        
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            mouseGlow.style.left = mouseX + 'px';
-            mouseGlow.style.top = mouseY + 'px';
-        });
-
-        // --- ANIMAÇÃO DATA PLEXUS / NEURAL NETWORK ---
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let particles = [];
-        
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.4; 
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.radius = Math.random() * 1.5 + 0.5;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 229, 255, 0.4)';
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = Math.floor((width * height) / 18000); 
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 140) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 229, 255, ${0.1 - distance/1400})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-                
-                if (mouseX !== 0 && mouseY !== 0) {
-                    const dxMouse = particles[i].x - mouseX;
-                    const dyMouse = particles[i].y - mouseY;
-                    const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-                    
-                    if (distanceMouse < 220) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 - distanceMouse/1466})`; 
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouseX, mouseY);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-
-        initParticles();
-        animate();
-
-        // --- ANIMATION OBSERVER ---
-        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-up, .timeline-item').forEach(el => {
-            observer.observe(el);
-        });
-
-        // --- NAVBAR SCROLL ---
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    </script>
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('ano').textContent=new Date().getFullYear();
+  var top=document.querySelector('.top'),bar=document.querySelector('.prog'),tl=document.getElementById('tl'),tf=document.querySelector('.tf'),items=tl.querySelectorAll('li');
+  function sc(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;top.classList.toggle('on',y>20);bar.style.transform='scaleX('+(h>0?y/h:0)+')';var r=tl.getBoundingClientRect(),m=innerHeight*.6;tf.style.height=(Math.min(Math.max((m-r.top)/r.height,0),1)*(r.height-16))+'px';items.forEach(function(li){li.classList.toggle('lit',li.getBoundingClientRect().top<m)})}
+  addEventListener('scroll',sc,{passive:true});addEventListener('resize',sc);sc();
+  var tog=document.querySelector('.tog'),nav=document.getElementById('menu');
+  function sm(o){nav.classList.toggle('open',o);top.classList.toggle('mo',o);tog.setAttribute('aria-expanded',o);tog.setAttribute('aria-label',o?'Fechar menu':'Abrir menu')}
+  tog.addEventListener('click',function(){sm(!nav.classList.contains('open'))});nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){sm(false)})});
+  function cnt(el){var n=+el.dataset.n,p=el.dataset.p||'';if(reduce){el.textContent=p+n;return}var t0=null;requestAnimationFrame(function st(t){if(!t0)t0=t;var k=Math.min((t-t0)/1500,1);el.textContent=p+Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(st)})}
+  var io='IntersectionObserver'in window?new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('vis-on');e.target.querySelectorAll('[data-n]').forEach(cnt);io.unobserve(e.target)})},{threshold:.12}):null;
+  document.querySelectorAll('.rv').forEach(function(el){io?io.observe(el):el.classList.add('vis-on')});
+  document.querySelectorAll('.card').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')})});
+  var W=['infraestrutura','alertas','incidentes','o trabalho manual','deploys'],wi=0,rot=document.querySelector('.rot span');
+  if(!reduce)setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%W.length;rot.textContent=W[wi];rot.classList.remove('out');rot.classList.add('in');requestAnimationFrame(function(){requestAnimationFrame(function(){rot.classList.remove('in')})})},450)},2600);
+  var L=[['<span class="k">$</span> ','kubectl get pods -n atlas'],['','<span class="d">NAME              READY   STATUS</span>',1],['','atlas-api-7f9c    <span class="g">1/1     Running</span>',1],['','atlas-worker-2b   <span class="g">1/1     Running</span>',1],['<span class="k">$</span> ','atlas alerts --today'],['<span class="g">✔</span> ','<span class="v">5.214</span> alertas processados',1],['<span class="g">✔</span> ','<span class="v">38</span> incidentes correlacionados',1],['<span class="y">⚡</span> ','diagnóstico A.I.D.A. em <span class="v">1m52s</span>',1],['<span class="k">$</span> ','toil --remove'],['<span class="k">→</span> ','<span class="k">automação aplicada. próximo desafio?</span>',1]];
+  var pre=document.getElementById('typed'),out='';function rd(x){pre.innerHTML=out+(x||'')+'<span class="car"></span>'}
+  if(reduce){L.forEach(function(l){out+=l[0]+l[1]+'\n'});rd()}else{var li=0;(function nx(){if(li>=L.length){rd();setTimeout(function(){out='';li=0;nx()},6000);return}var l=L[li++];if(l[2]){setTimeout(function(){out+=l[0]+l[1]+'\n';rd();nx()},300);return}var s=l[1],i=0;(function ty(){rd(l[0]+s.slice(0,i));if(i++<s.length)setTimeout(ty,38+Math.random()*40);else{out+=l[0]+s+'\n';setTimeout(nx,380)}})()})()}
+  var cv=document.getElementById('net'),cx=cv.getContext('2d'),hero=document.querySelector('.hero'),Wd,Hd,P=[],M={x:-999,y:-999},run=true,lp=false;
+  function sz(){var d=Math.min(devicePixelRatio||1,2);Wd=hero.clientWidth;Hd=hero.clientHeight;cv.width=Wd*d;cv.height=Hd*d;cx.setTransform(d,0,0,d,0,0);P=Array.from({length:Math.min(80,Math.floor(Wd*Hd/16000))},function(){return{x:Math.random()*Wd,y:Math.random()*Hd,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.6+.6}})}
+  function fr(){cx.clearRect(0,0,Wd,Hd);for(var i=0;i<P.length;i++){var p=P[i];if(!reduce){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>Wd)p.vx*=-1;if(p.y<0||p.y>Hd)p.vy*=-1}var dm=Math.hypot(p.x-M.x,p.y-M.y);cx.beginPath();cx.arc(p.x,p.y,p.r+(dm<140?1.2:0),0,6.283);cx.fillStyle=dm<140?'rgba(34,211,238,.95)':'rgba(148,163,184,.55)';cx.fill();for(var j=i+1;j<P.length;j++){var q=P[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<130){cx.strokeStyle='rgba(34,211,238,'+(.18*(1-d/130))+')';cx.lineWidth=1;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(q.x,q.y);cx.stroke()}}if(dm<170){cx.strokeStyle='rgba(139,92,246,'+(.45*(1-dm/170))+')';cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(M.x,M.y);cx.stroke()}}}
+  function loop(){if(!run||reduce){lp=false;return}fr();requestAnimationFrame(loop)}function go(){if(!lp&&!reduce){lp=true;requestAnimationFrame(loop)}}
+  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();M.x=e.clientX-r.left;M.y=e.clientY-r.top;if(reduce)fr()});hero.addEventListener('pointerleave',function(){M.x=M.y=-999});
+  addEventListener('resize',function(){sz();fr()});sz();fr();go();
+  if('IntersectionObserver'in window)new IntersectionObserver(function(es){run=es[0].isIntersecting;if(run)go()}).observe(hero);
+  document.addEventListener('visibilitychange',function(){run=!document.hidden;if(run)go()});
+})();
+</script>
 </body>
 </html>
