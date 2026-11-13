@@ -603,9 +603,12 @@ main .sec .ey::before{counter-increment:sec;content:counter(sec,decimal-leading-
     var near=false;if(mx>-900){cx.strokeStyle='rgba(139,92,246,.28)';cx.beginPath();for(i=0;i<n;i++){p=P[i];dx=p.x-mx;dy=p.y-my;if(dx*dx+dy*dy<28900){cx.moveTo(p.x,p.y);cx.lineTo(mx,my);near=true}}if(near)cx.stroke()}
     cx.fillStyle='rgba(148,163,184,.55)';cx.beginPath();for(i=0;i<n;i++){p=P[i];dx=p.x-mx;dy=p.y-my;if(dx*dx+dy*dy<19600)continue;cx.moveTo(p.x+p.r,p.y);cx.arc(p.x,p.y,p.r,0,6.283)}cx.fill();
     if(near){cx.fillStyle='rgba(34,211,238,.95)';cx.beginPath();for(i=0;i<n;i++){p=P[i];dx=p.x-mx;dy=p.y-my;if(dx*dx+dy*dy<19600){cx.moveTo(p.x+p.r+1.2,p.y);cx.arc(p.x,p.y,p.r+1.2,0,6.283)}}cx.fill()}}
-  function loop(){if(!run||reduce){lp=false;return}fr();requestAnimationFrame(loop)}function go(){if(!lp&&!reduce){lp=true;requestAnimationFrame(loop)}}
+  /* as animações só ligam depois que a página carregou e o navegador ficou ocioso; as partículas desenham a 30 fps */
+  var ready=false,odd=false;
+  window.quandoOcioso=function(f){var g=function(){(window.requestIdleCallback||function(c){return setTimeout(c,1)})(f,{timeout:2500})};if(document.readyState==='complete')setTimeout(g,500);else addEventListener('load',function(){setTimeout(g,500)})};
+  function loop(){if(!run||reduce){lp=false;return}odd=!odd;if(odd)fr();requestAnimationFrame(loop)}function go(){if(ready&&!lp&&!reduce){lp=true;requestAnimationFrame(loop)}}
   hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();M.x=e.clientX-r.left;M.y=e.clientY-r.top;if(reduce)fr()});hero.addEventListener('pointerleave',function(){M.x=M.y=-999});
-  addEventListener('resize',function(){clearTimeout(szT);szT=setTimeout(function(){sz();fr()},150)});sz();fr();go();
+  addEventListener('resize',function(){clearTimeout(szT);szT=setTimeout(function(){sz();fr()},150)});sz();fr();quandoOcioso(function(){ready=true;go()});
   if('IntersectionObserver'in window)new IntersectionObserver(function(es){run=es[0].isIntersecting;if(run)go()}).observe(hero);
   document.addEventListener('visibilitychange',function(){run=!document.hidden;if(run)go()});
 })();

@@ -38,7 +38,9 @@
       xpp.textContent = Math.round(k * 100) + '% XP';
       if (n !== lvl) { var up = n > lvl && lvl >= 0; lvl = n; setLevel(n, up); }
     };
-    addEventListener('scroll', sc, { passive: true }); addEventListener('resize', sc); sc();
+    var tk = false, onScroll = function () { if (tk) return; tk = true; requestAnimationFrame(function () { tk = false; sc(); }); };
+    addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
+    (window.quandoOcioso || function (f) { setTimeout(f, 1500); })(sc);
   }
 
   /* ---------- conquistas ---------- */

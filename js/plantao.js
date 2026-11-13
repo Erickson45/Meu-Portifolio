@@ -253,10 +253,10 @@
     }, { threshold: .25 }).observe(wrap);
   } else visible = true;
   document.addEventListener('visibilitychange', function () { if (document.hidden && running) paused = true; else if (running && visible) { paused = false; kick(); } });
-  if ('ResizeObserver' in window) new ResizeObserver(function () { if (wrap.clientWidth !== W) size(); }).observe(wrap);
-  else addEventListener('resize', size);
-  size();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!running) draw(); });
+  (window.quandoOcioso || function (f) { setTimeout(f, 1500); })(function () {
+    if ('ResizeObserver' in window) new ResizeObserver(function () { if (wrap.clientWidth !== W) size(); }).observe(wrap);
+    else { addEventListener('resize', size); size(); }
+  });
 
   window.Plantao = { start: start, alertas: function () { return mons.slice(); } };
 })();

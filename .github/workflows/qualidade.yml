@@ -20,10 +20,10 @@ jobs:
     name: HTML válido
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - name: html-validate
         run: npx --yes html-validate@8 index.html
       - name: Sintaxe dos scripts
@@ -33,7 +33,7 @@ jobs:
     name: Links funcionando
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: lycheeverse/lychee-action@v2
         with:
           fail: true
@@ -41,6 +41,7 @@ jobs:
             --no-progress
             --max-retries 3
             --accept 200,206,403,429,999
+            --exclude-loopback
             --exclude 'linkedin\.com'
             --exclude 'github\.com/Erickson45/Meu-Portifolio/actions'
             --exclude 'fonts\.(googleapis|gstatic)\.com'
@@ -50,7 +51,7 @@ jobs:
     name: Lighthouse
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: ./.github/lighthouserc.json

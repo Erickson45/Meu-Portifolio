@@ -167,7 +167,7 @@
 
   /* ---------- falas: o balão sai da cabeça e o texto vai sendo digitado ---------- */
   function say(text, ms) {
-    if (off || !text) return;
+    if (off || !text || el.hidden) return;
     wake(true);
     clearTimeout(bubTimer); clearInterval(typeT); typeT = 0;
     var chars = Array.from(text); fullText = text;
@@ -344,11 +344,16 @@
     document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
   }
 
-  size();
-  el.hidden = off;
-  if (!off) x = targetX();
-  requestAnimationFrame(tick);
-  setTimeout(function () { if (!off && scrollY < innerHeight * .5) say(LINES.inicio, 6500); }, 1600);
+  /* o mascote só entra em cena depois que a página carregou (não disputa CPU com o primeiro carregamento) */
+  var ocioso = window.quandoOcioso || function (f) { setTimeout(f, 1500); };
+  el.hidden = true;
+  ocioso(function () {
+    size();
+    el.hidden = off;
+    if (!off) x = targetX();
+    requestAnimationFrame(tick);
+    setTimeout(function () { if (!off && scrollY < innerHeight * .5) say(LINES.inicio, 6500); }, 900);
+  });
 
   window.Mascote = { say: say, jump: jump, party: party, dance: dance, toggle: toggle, on: function () { return !off; } };
 })();

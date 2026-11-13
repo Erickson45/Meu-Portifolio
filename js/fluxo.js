@@ -190,15 +190,16 @@
     el.addEventListener('pointerleave', function () { hover = null; if (!visible || reduce) draw(); });
   });
 
-  if ('ResizeObserver' in window) new ResizeObserver(layout).observe(box); else addEventListener('resize', layout);
-  if (!reduce && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      visible = es[0].isIntersecting;
-      if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
-      if (!visible) { clearInterval(ragT); ragT = 0; } else if (DET[sel].rag && !ragT) { ragT = setInterval(stepRag, 1400); }
-    }).observe(box);
-  }
-  layout();
   show(sel, false);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  /* medir o layout e animar só depois do carregamento */
+  (window.quandoOcioso || function (f) { setTimeout(f, 1500); })(function () {
+    if ('ResizeObserver' in window) new ResizeObserver(layout).observe(box); else { addEventListener('resize', layout); layout(); }
+    if (!reduce && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+        if (!visible) { clearInterval(ragT); ragT = 0; } else if (DET[sel].rag && !ragT) { ragT = setInterval(stepRag, 1400); }
+      }).observe(box);
+    }
+  });
 })();
