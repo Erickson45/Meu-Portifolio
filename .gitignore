@@ -1,0 +1,9 @@
+# Configuração local do editor/assistente
+.claude/
+
+# Currículo em PDF (tem telefone; só publicar com autorização)
+*.pdf
+
+# Sistema
+Thumbs.db
+.DS_Store

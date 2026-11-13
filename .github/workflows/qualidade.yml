@@ -1,0 +1,58 @@
+name: Qualidade do site
+
+# Roda a cada push e pull request: valida o HTML, confere os links e mede o site com o Lighthouse.
+# O deploy continua pelo GitHub Pages (branch), esta pipeline só garante a qualidade.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qualidade-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  html:
+    name: HTML válido
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: html-validate
+        run: npx --yes html-validate@8 index.html
+      - name: Sintaxe dos scripts
+        run: for f in js/*.js; do node --check "$f"; done
+
+  links:
+    name: Links funcionando
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          args: >-
+            --no-progress
+            --max-retries 3
+            --accept 200,206,403,429,999
+            --exclude 'linkedin\.com'
+            --exclude 'github\.com/Erickson45/Meu-Portifolio/actions'
+            --exclude 'fonts\.(googleapis|gstatic)\.com'
+            index.html README.md
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./.github/lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
