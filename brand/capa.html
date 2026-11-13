@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Capa pixel art · Erickson Queiroz</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#070B14;overflow:hidden}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+/* Capa em pixel art no estilo do portfólio.
+   Uso: capa.html?w=1584&h=396 (LinkedIn) ou capa.html?w=1280&h=320&nome=1 (GitHub). */
+(async function () {
+  var q = new URLSearchParams(location.search), W = +(q.get('w') || 1584), H = +(q.get('h') || 396), NOME = q.get('nome') === '1';
+  var PX = 4, LW = Math.round(W / PX), LH = Math.round(H / PX);
+  var cv = document.getElementById('c'); cv.width = W; cv.height = H; var ctx = cv.getContext('2d');
+  var lo = document.createElement('canvas'); lo.width = LW; lo.height = LH; var g = lo.getContext('2d');
+  var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  function px(x, y, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), 1, 1); }
+  function rect(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+
+  /* céu com degradê pontilhado (dithering) */
+  var SKY = ['#070B14', '#0B0F22', '#120E2A', '#1A1238', '#241544'], BAY = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+  for (var y = 0; y < LH; y++) {
+    var t = Math.pow(y / LH, 1.25) * (SKY.length - 1), i = Math.floor(t), f = t - i;
+    for (var x = 0; x < LW; x++) px(x, y, (f * 16 > BAY[y % 4][x % 4] && i + 1 < SKY.length) ? SKY[i + 1] : SKY[i]);
+  }
+  /* aurora em faixas */
+  for (var x = 0; x < LW; x++) {
+    var base = LH * .2 + Math.sin(x * .045) * 5 + Math.sin(x * .013 + 1) * 4;
+    for (var k = 0; k < 16; k++) {
+      var a = (1 - k / 16) * .16 * (.6 + .4 * Math.sin(x * .08));
+      g.fillStyle = (x / LW < .55 ? 'rgba(34,211,238,' : 'rgba(139,92,246,') + a.toFixed(3) + ')';
+      g.fillRect(x, Math.round(base + k), 1, 1);
+    }
+  }
+  /* estrelas */
+  for (var s = 0; s < LW * .5; s++) {
+    var sx = rnd() * LW, sy = rnd() * LH * .62, b = rnd();
+    if (sx > LW * .29 && sx < LW * .76 && sy > LH * .14 && sy < LH * .68) continue;
+    px(sx, sy, b > .92 ? '#E8EEF5' : b > .7 ? '#9AA8B9' : '#4B5A74');
+    if (b > .975) { px(sx - 1, sy, '#22D3EE'); px(sx + 1, sy, '#22D3EE'); px(sx, sy - 1, '#22D3EE'); px(sx, sy + 1, '#22D3EE'); }
+  }
+  /* lua */
+  var mx = LW * .06, my = LH * .2;
+  for (var yy = -6; yy <= 6; yy++) for (var xx = -6; xx <= 6; xx++) { var d = xx * xx + yy * yy; if (d <= 36) px(mx + xx, my + yy, d > 26 ? '#C9D4E3' : (xx + yy > 3 ? '#DDE5EF' : '#F1F5F9')); }
+  px(mx - 2, my - 1, '#B8C4D4'); px(mx + 1, my + 2, '#B8C4D4'); px(mx + 2, my - 3, '#C9D4E3');
+
+  /* morros: distante, médio e chão */
+  function ridge(baseY, amp, freq, ph, color) {
+    for (var x = 0; x < LW; x++) {
+      var y0 = Math.round(baseY + Math.sin(x * freq + ph) * amp + Math.sin(x * freq * 2.7 + ph * 2) * amp * .35);
+      rect(x, y0, 1, LH - y0, color);
+    }
+  }
+  ridge(LH * .66, 5, .025, 1.2, '#151033');
+  ridge(LH * .76, 4, .04, 3.1, '#0F0C26');
+  ridge(LH * .88, 1.5, .06, .4, '#0A0919');
+  var groundY = function (x) { return Math.round(LH * .88 + Math.sin(x * .06 + .4) * 1.5 + Math.sin(x * .06 * 2.7 + .8) * .5); };
+
+  /* mandacarus */
+  function cacto(x, h) {
+    var y = groundY(x), c = '#0F2A22', l = '#17463A';
+    rect(x, y - h, 2, h, c); px(x, y - h, l);
+    rect(x - 3, y - h * .6, 1, h * .3, c); rect(x - 3, y - h * .3, 3, 1, c);
+    rect(x + 4, y - h * .75, 1, h * .35, c); rect(x + 2, y - h * .4, 3, 1, c);
+  }
+  [.24, .47, .63, .79].forEach(function (p, i) { cacto(Math.round(LW * p), 9 + (i % 2) * 4); });
+
+  /* casinhas de São Miguel com janelas acesas */
+  function casa(x, w, h, telhado) {
+    var y = Math.round(LH * .76 + Math.sin(x * .04 + 3.1) * 4 + Math.sin(x * .108 + 6.2) * 1.4) + 1;
+    rect(x, y - h, w, h, '#1B1636'); for (var i = 0; i <= w / 2; i++) rect(x - 1 + i, y - h - i, w + 2 - i * 2, 1, telhado);
+    rect(x + 1, y - h + 2, 1, 2, '#FBBF24'); if (w > 5) rect(x + w - 2, y - h + 2, 1, 2, '#FCD34D');
+  }
+  casa(Math.round(LW * .33), 6, 5, '#3B1D2E'); casa(Math.round(LW * .36), 5, 4, '#2E1A3A'); casa(Math.round(LW * .4), 7, 5, '#3B1D2E'); casa(Math.round(LW * .43), 5, 4, '#2E1A3A');
+
+  /* rack de servidor */
+  var rx = Math.round(LW * .845), ry = groundY(rx);
+  rect(rx, ry - 20, 9, 20, '#0F172A'); rect(rx, ry - 20, 9, 1, '#334155'); rect(rx, ry - 20, 1, 20, '#1E293B'); rect(rx + 8, ry - 20, 1, 20, '#1E293B');
+  for (var u = 0; u < 6; u++) { rect(rx + 1, ry - 18 + u * 3, 7, 2, '#1E293B'); px(rx + 2, ry - 18 + u * 3, u === 2 ? '#FBBF24' : '#34D399'); px(rx + 4, ry - 18 + u * 3, '#22D3EE'); }
+
+  /* vaga-lumes */
+  for (var v = 0; v < LW * .05; v++) { var fx = LW * (.2 + rnd() * .8), fy = LH * (.6 + rnd() * .3); px(fx, fy, rnd() > .5 ? '#22D3EE' : '#C4B5FD'); }
+
+  /* mini-Erickson (o mesmo sprite do portfólio) */
+  var S = document.createElement('canvas'); S.width = 18; S.height = 25; var sg = S.getContext('2d');
+  var C = { h: '#1A120D', H: '#4A3426', s: '#E6B992', S: '#C99470', b: '#5A3E2E', e: '#17121F', m: '#9B3F36', t: '#1E1D29', T: '#2E2C3D', g: '#A78BFA', p: '#9AA3AE', P: '#7D8693', k: '#F1F5F9', r: '#E2E8F0' };
+  function R(x, y, w, h, c) { sg.fillStyle = C[c]; sg.fillRect(x + 1, y + 2, w, h); }
+  R(4, 18, 3, 3, 'p'); R(9, 18, 3, 3, 'p'); R(4, 21, 3, 1, 'k'); R(9, 21, 3, 1, 'k'); R(7, 18, 2, 1, 'p'); R(7, 19, 2, 2, 'T'); R(6, 18, 1, 2, 'P'); R(9, 18, 1, 2, 'P');
+  R(3, 12, 10, 6, 't'); R(3, 17, 10, 1, 'T'); R(6, 12, 4, 1, 'T');
+  R(6, 13, 4, 1, 'g'); R(5, 14, 6, 2, 'g'); R(5, 16, 1, 1, 'g'); R(7, 16, 2, 1, 'g'); R(10, 16, 1, 1, 'g'); R(6, 14, 1, 1, 't'); R(9, 14, 1, 1, 't'); R(7, 15, 2, 1, 't');
+  R(2, 12, 1, 3, 't'); R(2, 15, 1, 2, 's'); R(13, 12, 1, 1, 't'); R(14, 10, 1, 2, 's'); R(14, 7, 2, 3, 's');
+  R(6, 11, 4, 1, 'S'); R(4, 4, 8, 7, 's'); R(3, 6, 1, 2, 's'); R(12, 6, 1, 2, 's'); R(3, 8, 1, 1, 'r');
+  R(5, 0, 2, 1, 'h'); R(9, 0, 3, 1, 'h'); R(4, 1, 8, 1, 'h'); R(3, 2, 10, 2, 'h'); R(2, 3, 1, 2, 'h'); R(13, 3, 1, 1, 'h');
+  R(3, 4, 2, 1, 'h'); R(7, 4, 2, 1, 'h'); R(11, 4, 2, 1, 'h'); R(3, 5, 1, 1, 'h'); R(12, 5, 1, 1, 'h');
+  R(5, 1, 1, 1, 'H'); R(8, 1, 1, 1, 'H'); R(10, 2, 1, 1, 'H'); R(4, 2, 1, 1, 'H'); R(6, 3, 1, 1, 'H'); R(11, 3, 1, 1, 'H');
+  R(5, 5, 2, 1, 'h'); R(9, 5, 2, 1, 'h'); R(5, 7, 1, 1, 'e'); R(6, 6, 1, 1, 'e'); R(9, 6, 1, 1, 'e'); R(10, 7, 1, 1, 'e');
+  R(8, 8, 1, 1, 'S'); R(4, 8, 1, 3, 'b'); R(11, 8, 1, 3, 'b'); R(5, 10, 6, 1, 'b'); R(6, 9, 4, 1, 'b'); R(7, 9, 2, 2, 'm');
+  /* contorno claro, como no portfólio */
+  var O = document.createElement('canvas'); O.width = 18; O.height = 25; var og = O.getContext('2d');
+  [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) { og.drawImage(S, d[0], d[1]); });
+  og.globalCompositeOperation = 'source-in'; og.fillStyle = 'rgba(232,238,245,.92)'; og.fillRect(0, 0, 18, 25); og.globalCompositeOperation = 'source-over'; og.drawImage(S, 0, 0);
+  /* amplia sem suavizar: pixel art de verdade */
+  ctx.imageSmoothingEnabled = false; ctx.drawImage(lo, 0, 0, LW * PX, LH * PX);
+  /* o mascote é desenhado maior, por cima da cena */
+  var M = Math.max(4, Math.round(6 * W / 1584)), feet = groundY(Math.round(LW * .915)) * PX + M;
+  var exPx = Math.round(W * .9), eyPx = feet - 25 * M;
+  ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(exPx + 4 * M, feet - 2 * M, 10 * M, M);
+  ctx.drawImage(O, exPx, eyPx, 18 * M, 25 * M);
+  var ex = exPx / PX, ey = eyPx / PX;
+
+  /* textos nítidos por cima */
+  try { await Promise.all(['700 58px \"Space Grotesk\", \"Segoe UI\", sans-serif','500 20px \"Plus Jakarta Sans\", \"Segoe UI\", sans-serif','600 14px \"Plus Jakarta Sans\", \"Segoe UI\", sans-serif','700 16px \"JetBrains Mono\", Consolas, monospace'].map(function (s) { return document.fonts.load(s); })); } catch (e) { /* segue com a fonte de reserva */ }
+  await document.fonts.ready;
+  var sc = W / 1584, tx = W * .305, grad = ctx.createLinearGradient(tx, 0, tx + 640 * sc, 0);
+  grad.addColorStop(0, '#22D3EE'); grad.addColorStop(.45, '#60A5FA'); grad.addColorStop(1, '#8B5CF6');
+  var top = H * (NOME ? .2 : .26);
+  ctx.textBaseline = 'alphabetic';
+  ctx.font = '700 ' + Math.round(16 * sc) + 'px \"JetBrains Mono\", Consolas, monospace'; ctx.fillStyle = '#22D3EE';
+  ctx.fillText('erickson@ops:~$ automate --reduce-toil', tx, top);
+  var y2 = top + 58 * sc;
+  if (NOME) { ctx.font = '700 ' + Math.round(50 * sc) + 'px \"Space Grotesk\", \"Segoe UI\", sans-serif'; ctx.fillStyle = '#E8EEF5'; ctx.fillText('Erickson Queiroz', tx, y2); y2 += 54 * sc; }
+  ctx.font = '700 ' + Math.round((NOME ? 40 : 58) * sc) + 'px \"Space Grotesk\", \"Segoe UI\", sans-serif'; ctx.fillStyle = grad;
+  ctx.fillText('DevOps · SRE · AIOps', tx, y2);
+  ctx.font = '500 ' + Math.round(20 * sc) + 'px \"Plus Jakarta Sans\", \"Segoe UI\", sans-serif'; ctx.fillStyle = '#C9D4E3';
+  ctx.fillText('Automação, observabilidade e IA local em ambientes críticos', tx, y2 + 36 * sc);
+  /* chips de impacto */
+  var chips = ['5–7 mil alertas/dia', '−60% no tempo de chamado', 'diagnóstico com IA em ~2 min'], cx = tx, cy = y2 + 62 * sc;
+  ctx.font = '700 ' + Math.round(14 * sc) + 'px \"JetBrains Mono\", Consolas, monospace';
+  chips.forEach(function (c) {
+    var w = ctx.measureText(c).width + 24 * sc, h = 30 * sc;
+    ctx.fillStyle = 'rgba(7,11,20,.72)'; ctx.fillRect(cx, cy, w, h);
+    ctx.strokeStyle = 'rgba(34,211,238,.55)'; ctx.lineWidth = Math.max(1, 2 * sc); ctx.strokeRect(cx + .5, cy + .5, w - 1, h - 1);
+    ctx.fillStyle = '#E8EEF5'; ctx.fillText(c, cx + 12 * sc, cy + 20 * sc); cx += w + 10 * sc;
+  });
+  /* balão do mascote */
+  var bt = 'Ôxe, bora automatizar?', bx = ex * PX - 150 * sc, by = ey * PX - 36 * sc;
+  ctx.font = '600 ' + Math.round(14 * sc) + 'px \"Plus Jakarta Sans\", \"Segoe UI\", sans-serif';
+  var bw = ctx.measureText(bt).width + 22 * sc, bh = 30 * sc;
+  ctx.fillStyle = '#0E1526'; ctx.fillRect(bx, by, bw, bh); ctx.strokeStyle = 'rgba(34,211,238,.6)'; ctx.lineWidth = Math.max(1, 2 * sc); ctx.strokeRect(bx + .5, by + .5, bw - 1, bh - 1);
+  ctx.fillStyle = '#0E1526'; ctx.beginPath(); ctx.moveTo(bx + bw - 30 * sc, by + bh - 1); ctx.lineTo(bx + bw - 16 * sc, by + bh + 10 * sc); ctx.lineTo(bx + bw - 18 * sc, by + bh - 1); ctx.fill();
+  ctx.fillStyle = '#E8EEF5'; ctx.fillText(bt, bx + 11 * sc, by + 20 * sc);
+  document.title = 'pronto';
+})();
+</script>
+</body>
+</html>
